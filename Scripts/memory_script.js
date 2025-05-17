@@ -1,3 +1,10 @@
+const startButton = document.getElementById("buttonStart");
+const sacchetto = document.getElementById("containerSacchetto");
+const carte = document.getElementById("containerCarte");
+const vaso = document.getElementById("containerVaso");
+const retry = document.getElementById("retryButton");
+const score = document.getElementById("punteggioEffettuato");
+
 var associamenti = new Array(20);
 var immagini = new Array(10);
 var giratiN = new Array(2);
@@ -9,7 +16,10 @@ var puntoInterrogativo = "Imgs/Interrogativo.png";
 var mosse = 0, punteggio = 100;
 var completati = 0;
 
-document.addEventListener("DOMContentLoaded", function(){
+startButton.addEventListener("click", function(){
+    sacchetto.style.display = 'none';
+    carte.style.display = 'block';
+
     let cartaBase = "card", immagineBase = "img";
     let left = 100, top = 10;
 
@@ -113,7 +123,9 @@ function addListeners(id, cardN, numAssoc){
                 updatePunteggio();
             }
             if(completati == 10){
-                //Codice per stampare il punteggio
+                carte.style.display = 'none';
+                score.textContent = 'Score: ' + punteggio;
+                vaso.style.display = 'block';
             }
         }
     });
@@ -124,3 +136,18 @@ function updatePunteggio(){
     if(mosse > 10 && punteggio != 0)
         punteggio -= 2;
 }
+
+startButton.addEventListener("mouseover", function(){
+    startButton.style.backgroundSize = '180px 80px';
+    startButton.style.fontSize = '24px';
+});
+
+startButton.addEventListener("mouseleave", function(){
+    startButton.style.backgroundSize = '160px 60px';
+    startButton.style.fontSize = '22px';
+});
+
+retry.addEventListener("click", function(){
+    vaso.style.display = 'none';
+    startButton.click();
+});
