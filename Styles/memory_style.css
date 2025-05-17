@@ -1,5 +1,7 @@
 body{
-    background-color: antiquewhite;
+    background-image: url("../Imgs/SfondoMemory.jpg");
+    background-size:cover;
+    background-repeat: no-repeat;
 }
 
 .cards{
@@ -19,5 +21,12 @@ body{
 
 #container{
     position: absolute;
-    /*display: none;*/
+    display: none;
+}
+
+#titoloPagina{
+    font-size: 60px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-left: 37%;
+    color: green;
 }

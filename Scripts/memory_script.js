@@ -11,7 +11,7 @@ var completati = 0;
 
 document.addEventListener("DOMContentLoaded", function(){
     let cartaBase = "card", immagineBase = "img";
-    let left = 100, top = 30;
+    let left = 100, top = 10;
 
     setAssociazioni();
 
@@ -78,7 +78,7 @@ function setAssociazioni(){
 
 function addListeners(id, cardN, numAssoc){
     document.getElementById(id).addEventListener("click", function(){
-        if(associamenti[numAssoc] != 0){
+        if(associamenti[numAssoc] != 0 && toccati < 2){
             toccati++;
 
             if(toccati == 1){
@@ -98,6 +98,7 @@ function addListeners(id, cardN, numAssoc){
                     setTimeout(() => {
                         document.getElementById(giratiId[0]).src = done;
                         document.getElementById(giratiId[1]).src = done;
+                        toccati = 0;
                     }, 500);
                     associamenti[numeriAssociati[0]] = 0;
                     associamenti[numeriAssociati[1]] = 0;
@@ -106,13 +107,14 @@ function addListeners(id, cardN, numAssoc){
                     setTimeout(() => {
                         document.getElementById(giratiId[0]).src = puntoInterrogativo;
                         document.getElementById(giratiId[1]).src = puntoInterrogativo;
+                        toccati = 0;
                     }, 2000);
                 }
-                toccati = 0;
                 updatePunteggio();
             }
-            if(completati == 10)
-                alert("gioco finito con punteggio: " + punteggio);
+            if(completati == 10){
+                //Codice per stampare il punteggio
+            }
         }
     });
 }
