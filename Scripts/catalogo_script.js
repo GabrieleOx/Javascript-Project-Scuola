@@ -1,0 +1,1 @@
+//cosa succede quando interagisco con la pagina e i suoi elementi
