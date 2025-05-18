@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.spacer {
+  height: 40vh;
+}
+
+.fade-text {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.fade-text.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-title {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  text-align: center;
+  font-size: 4rem;
+  margin-top: 60px;
+}
+
+.fade-title.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-text.left {
+  text-align: left;
+  margin-left: 5%;
+  margin-right: auto;
+}
+
+.fade-text.right {
+  text-align: left;
+  margin-right: 5%;
+  margin-left: auto;
+}
+
+/* Flexbox container per posizionare il testo e il sole */
+.sun-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+canvas {
+  border: none; /* Rimuove il bordo del canvas */
+  background-color: #f9f9f9; /* Imposta lo sfondo uguale a quello del corpo */
+}
