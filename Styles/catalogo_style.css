@@ -32,9 +32,7 @@ h1 {
     transition: transform 0.3s ease;
 }
 
-.elemento:hover {
-    transform: scale(1.05);
-}
+
 
 .elemento img {
     width: 100%;
