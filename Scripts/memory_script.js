@@ -88,7 +88,7 @@ function setAssociazioni(){
 
 function addListeners(id, cardN, numAssoc){
     document.getElementById(id).addEventListener("click", function(){
-        if(associamenti[numAssoc] != 0 && toccati < 2){
+        if(associamenti[numAssoc] != 0 && toccati < 2 && numeriAssociati[0] != numAssoc){
             toccati++;
 
             if(toccati == 1){
@@ -149,5 +149,8 @@ startButton.addEventListener("mouseleave", function(){
 
 retry.addEventListener("click", function(){
     vaso.style.display = 'none';
+    mosse = 0;
+    completati = 0;
+    punteggio = 100;
     startButton.click();
 });
