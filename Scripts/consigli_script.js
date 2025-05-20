@@ -15,20 +15,28 @@ window.addEventListener('scroll', revealTextOnScroll);
 window.addEventListener('load', revealTextOnScroll);
 
 // Codice per disegnare il sole con raggi animati e ombre
-const canvas = document.getElementById('sunCanvas');
+const canvas = document.getElementById('sun-cloud');
 const ctx = canvas.getContext('2d');
 
 // Proprietà del sole
 const sun = {
   x: canvas.width / 2,
   y: canvas.height / 2,
-  radius: 40,            // Sole più piccolo
+  radius: 50,            // Sole più piccolo
   numRays: 10,
-  rayLength: 20,
+  rayLength: 40,
   rayDistance: 50,
   rayAngle: 0,
   raySpeed: 0.01
 };
+
+const cloud = {
+    x: 300,
+    y: 130,
+    speed: 0.5,
+    direction: -1
+};
+
 
 // Funzione per disegnare il sole
 function drawSun() {
@@ -73,14 +81,34 @@ function drawRays() {
     ctx.restore();
   }
 }
-
-// Funzione per animare la scena
-function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Pulisce il canvas ad ogni frame
-  drawSun(); // Disegna il sole
-  drawRays(); // Disegna i raggi
-  sun.rayAngle += sun.raySpeed; // Ruota i raggi attorno al sole
-  requestAnimationFrame(animate); // Richiama il frame successivo
+function drawCloud() {
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(cloud.x, cloud.y, 40, 0, Math.PI * 2);
+    ctx.arc(cloud.x + 40, cloud.y - 20, 50, 0, Math.PI * 2);
+    ctx.arc(cloud.x + 80, cloud.y, 40, 0, Math.PI * 2);
+    ctx.arc(cloud.x + 40, cloud.y + 20, 45, 0, Math.PI * 2);
+    ctx.fill();
 }
 
-animate(); // Inizia l'animazione del sole
+function animate() 
+{
+
+  
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    drawSun();
+    drawRays();
+    drawCloud();
+
+    sun.rayAngle += sun.raySpeed;
+
+    cloud.x += cloud.speed * cloud.direction;
+
+     if (cloud.x <= 250 || cloud.x >= 350) {
+        cloud.direction *= -1;
+    }
+    requestAnimationFrame(animate);
+}
+
+window.onload = animate;
