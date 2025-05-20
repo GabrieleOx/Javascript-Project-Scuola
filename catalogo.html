@@ -8,12 +8,30 @@
 </head>
 <body>
     <h1>CATALOGO</h1>
-    <div> 
-      <select id="terreno" name="terreno" >
-        <option value="limoso">Limoso</option>
+    <div>
+        <button id="reset">Reset Filtri</button> 
+     <div> 
+    <label for="terreno">Tipo di terreno:</label>
+    <select id="terreno" name="terreno">
         <option value="argilloso">Argilloso</option>
+        <option value="limoso">Limoso</option>
         <option value="sabbioso">Sabbioso</option>
-      </select>
+    </select>
+
+    <label for="acqua">Quantità d'acqua:</label>
+    <select id="acqua" name="acqua">
+        <option value="scarsa">Scarsa</option>
+        <option value="moderata">Moderata</option>
+        <option value="abbondante">Abbondante</option>
+    </select>
+
+    <label for="sole">Esposizione al sole:</label>
+    <select id="sole" name="sole">
+        <option value="diretto">Diretto</option>
+        <option value="indiretto">Indiretto</option>
+        <option value="ombra">Ombra</option>
+    </select>
+</div>
 
     </div>
     <div class="catalogo">
