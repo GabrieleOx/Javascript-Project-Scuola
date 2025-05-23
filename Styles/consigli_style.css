@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f34545;
+  background-color: #f8f8f8;
   color: #000000;
   display: flex;
   flex-direction: column;
@@ -43,9 +43,21 @@ body {
 
 #sun-cloud {
   position:absolute;
-  border: none; /* Rimuove il bordo del canvas */
-  background-color: #ffffff; /* Imposta lo sfondo uguale a quello del corpo */
+  border: none; 
+  
   margin-top: -600px;
-  margin-left: 900px;
+  margin-left: 80%;
   background:none;
+}
+
+#rain
+{
+  position: absolute;
+  right: 5vw;
+  top: 540px; /* regola questo valore per abbassare/alzare il canvas rispetto al top della pagina */
+  border: none;
+  background: none;
+  margin: 0;
+  display: block;
+  /* nessun margin-left/margin-top */
 }
