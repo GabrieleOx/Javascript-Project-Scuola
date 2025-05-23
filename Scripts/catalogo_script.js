@@ -17,41 +17,44 @@ document.addEventListener("DOMContentLoaded", function() {
     const resetButton = document.getElementById("reset");
 
     const criteri = {
-        "Orchidea": { terreno: "limoso", acqua: "moderata", sole: "indiretto" },
-        "Ficus": { terreno: "argilloso", acqua: "moderata", sole: "ombra" },
-        "Lavanda": { terreno: "sabbioso", acqua: "scarsa", sole: "diretto" },
-        "Rosmarino": { terreno: "sabbioso", acqua: "scarsa", sole: "diretto" },
-        "Azalea": { terreno: "limoso", acqua: "abbondante", sole: "indiretto" },
-        "Cactus": { terreno: "sabbioso", acqua: "scarsa", sole: "diretto" },
-        "Felce": { terreno: "argilloso", acqua: "abbondante", sole: "ombra" },
-        "Anthurium": { terreno: "limoso", acqua: "moderata", sole: "indiretto" },
-        "Basilico": { terreno: "limoso", acqua: "moderata", sole: "diretto" },
-        "Peperoncino": { terreno: "sabbioso", acqua: "moderata", sole: "diretto" },
-        "Pothos": { terreno: "limoso", acqua: "moderata", sole: "indiretto" },
-        "Sansevieria": { terreno: "sabbioso", acqua: "scarsa", sole: "indiretto" },
-        "Geranio": { terreno: "limoso", acqua: "moderata", sole: "diretto" },
-        "Begonia": { terreno: "limoso", acqua: "abbondante", sole: "indiretto" },
-        "Aralia": { terreno: "argilloso", acqua: "moderata", sole: "indiretto" },
-        "Gelsomino": { terreno: "sabbioso", acqua: "moderata", sole: "diretto" },
-        "Edera": { terreno: "argilloso", acqua: "moderata", sole: "ombra" },
-        "Oleandro": { terreno: "sabbioso", acqua: "moderata", sole: "diretto" },
-        "Kentia": { terreno: "limoso", acqua: "moderata", sole: "indiretto" },
-        "Aloe Vera": { terreno: "sabbioso", acqua: "scarsa", sole: "diretto" }
-    };
+    "Orchidea": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Ficus": { terreno: ["argilloso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["ombra", "qualsiasi"] },
+    "Lavanda": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Rosmarino": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Azalea": { terreno: ["limoso", "qualsiasi"], acqua: ["abbondante", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Cactus": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Felce": { terreno: ["argilloso", "qualsiasi"], acqua: ["abbondante", "qualsiasi"], sole: ["ombra", "qualsiasi"] },
+    "Anthurium": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Basilico": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Peperoncino": { terreno: ["sabbioso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Pothos": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Sansevieria": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Geranio": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Begonia": { terreno: ["limoso", "qualsiasi"], acqua: ["abbondante", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Aralia": { terreno: ["argilloso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Gelsomino": { terreno: ["sabbioso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Edera": { terreno: ["argilloso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["ombra", "qualsiasi"] },
+    "Oleandro": { terreno: ["sabbioso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
+    "Kentia": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
+    "Aloe Vera": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] }
+};
 
-    function filtraCatalogo() {
-        const terreno = terrenoSelect.value;
-        const acqua = acquaSelect.value;
-        const sole = soleSelect.value;
 
-        elementi.forEach(elemento => {
-            const condizioni = criteri[elemento.id];
+ function filtraCatalogo() {
+    const terreno = terrenoSelect.value;
+    const acqua = acquaSelect.value;
+    const sole = soleSelect.value;
 
-            elemento.style.display = (condizioni && condizioni.terreno === terreno && condizioni.acqua === acqua && condizioni.sole === sole)
-                ? "block"
-                : "none";
-        });
-    }
+    elementi.forEach(elemento => {
+        const condizioni = criteri[elemento.id];
+
+        elemento.style.display = (condizioni &&
+            (terreno === "qualsiasi" || condizioni.terreno.includes(terreno)) &&
+            (acqua === "qualsiasi" || condizioni.acqua.includes(acqua)) &&
+            (sole === "qualsiasi" || condizioni.sole.includes(sole))
+        ) ? "block" : "none";
+    });
+}
 
     // Reset filtri
     resetButton.addEventListener("click", () => {
