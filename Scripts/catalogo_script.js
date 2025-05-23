@@ -56,14 +56,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 }
 
-    // Reset filtri
-    resetButton.addEventListener("click", () => {
-        terrenoSelect.selectedIndex = 0;
-        acquaSelect.selectedIndex = 0;
-        soleSelect.selectedIndex = 0;
-        elementi.forEach(elemento => elemento.style.display = "block");
-    });
-
     // Assegna il filtro agli eventi
     [terrenoSelect, acquaSelect, soleSelect].forEach(select => select.addEventListener("change", filtraCatalogo));
 });
