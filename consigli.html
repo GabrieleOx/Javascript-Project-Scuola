@@ -15,31 +15,35 @@
   <div class="spacer"></div>
 
   <!-- Container per il testo e il sole -->
-  <div class="fade-text left sun-container">
-    <div>
+  <div class="fade-text sun-container">
+    
       <p>☀️​Quanto sole deve prendere?☀️​</p>
       <p>
         La quantita' di sole necessaria varia da pianta a pianta;<br>
-        Pieno sole☀️​	6+ ore al giorno    (giardini o balconi a sud)<br>
-        Mezz’ombra🌤️​ 	3–6 ore al giorno   (dietro alberi o tende)<br>
-        Ombra meno🌥️​ di 3 ore al giorno   (angoli o zone a nord)<br>
+        Pieno sole☀️​	: 6+ ore al giorno    (giardini o balconi a sud)<br>
+        Mezz’ombra🌤️​ 	: 3–6 ore al giorno   (dietro alberi o tende)<br>
+        Ombra🌥️ : meno​ di 3 ore al giorno   (angoli o zone a nord)<br>
         Per capire se la pianta prende abbastanza luce basta guardare
         le foglie,<br> se sono troppo pallide o cadenti c'e' poca luce, se invece 
         sono scottate prendono troppa luce.
       </p>
-    </div>
-    <canvas id="sunCanvas" width="600" height="400"></canvas> <!-- Canvas più grande -->
+    
+    <canvas id="sun-cloud" width="600" height="400"></canvas>
+    <div class="spacer"></div>
+
   </div>
 
-  <div class="spacer"></div>
+  
 
-  <div class="fade-text right">
+  <div class="fade-text">
+
+    <canvas id="rain" width="600" height="500"></canvas>
     <p>💧Di quanta acqua ha bisogno?💧</p>
     <p>
     La quantità di acqua di cui una pianta ha bisogno non segue una regola unica,
     ma dipende da diversi fattori, come il tipo di pianta,
-    le condizioni ambientali, il terreno, la posizione e la stagione.
-    Ogni pianta ha esigenze diverse<br><br>
+    le condizioni ambientali, il terreno, la posizione e la stagione.<br>
+    Ogni pianta ha esigenze diverse.<br><br>
     Tipo di pianta<br><br>
     Piante tropicali🌲​ → +💧<br>
     Piante grasse🌵​​   → --💧<br><br>
@@ -53,22 +57,9 @@
     Al sole🔆 → +💧<br>
     In ombra o in casa🔅​ → -💧<br><br>
     </p>
-
-
-
-
   </div>
 
-  <div class="spacer"></div>
-
-  <div class="fade-text left">È tutto scritto in JavaScript puro, senza librerie.</div>
-
-  <div class="spacer"></div>
-
-
-
-    
-console.log("Script caricato correttamente");  
+  
    
 <script src="Scripts/consigli_script.js"></script> 
 </body>
