@@ -4,27 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const soleSelect = document.getElementById("sole");
     const elementi = document.querySelectorAll(".elemento");
 
-    // Effetto di fade-in + scala al mouse
-    elementi.forEach((el, index) => {
-        el.addEventListener("mouseenter", () => el.style.transform = "scale(1.05)");
-        el.addEventListener("mouseleave", () => el.style.transform = "scale(1)");
-
-        el.style.opacity = "0";
-        setTimeout(() => {
-            el.style.transition = "opacity 0.5s ease-in-out";
-            el.style.opacity = "1";
-        }, index * 200); // Effetto sfalsato
-
-        // Flip al clic
-        const inner = el.querySelector(".inner");
-        if (inner) {
-            el.addEventListener("click", () => {
-                inner.classList.toggle("flipped");
-            });
-        }
-    });
-
-    // Filtraggio delle piante
     const criteri = {
         "Orchidea": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
         "Ficus": { terreno: ["argilloso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["ombra", "qualsiasi"] },
@@ -36,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         "Anthurium": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
         "Basilico": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
         "Peperoncino": { terreno: ["sabbioso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
-        "Pothos": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
         "Sansevieria": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
         "Geranio": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["diretto", "qualsiasi"] },
         "Begonia": { terreno: ["limoso", "qualsiasi"], acqua: ["abbondante", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
@@ -48,6 +26,27 @@ document.addEventListener("DOMContentLoaded", function () {
         "Aloe Vera": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] }
     };
 
+    // Effetto di fade-in + scala al mouse
+    elementi.forEach((el, index) => {
+        el.addEventListener("mouseenter", () => el.style.transform = "scale(1.05)");
+        el.addEventListener("mouseleave", () => el.style.transform = "scale(1)");
+
+        el.style.opacity = "0";
+        setTimeout(() => {
+            el.style.transition = "opacity 0.5s ease-in-out";
+            el.style.opacity = "1";
+        }, index * 200); // Effetto sfalsato
+
+        // Flip al clic con rotazione di 180°
+        const inner = el.querySelector(".inner");
+        if (inner) {
+            el.addEventListener("click", () => {
+                inner.classList.toggle("flipped");
+            });
+        }
+    });
+
+    // Filtraggio delle piante
     function filtraCatalogo() {
         const terreno = terrenoSelect.value;
         const acqua = acquaSelect.value;
@@ -56,14 +55,23 @@ document.addEventListener("DOMContentLoaded", function () {
         elementi.forEach(elemento => {
             const condizioni = criteri[elemento.id];
 
-            elemento.style.display = (condizioni &&
-                (terreno === "qualsiasi" || condizioni.terreno.includes(terreno)) &&
-                (acqua === "qualsiasi" || condizioni.acqua.includes(acqua)) &&
-                (sole === "qualsiasi" || condizioni.sole.includes(sole))
-            ) ? "block" : "none";
+            if (condizioni) {
+                const terrenoValido = terreno === "qualsiasi" || condizioni.terreno.includes(terreno);
+                const acquaValida = acqua === "qualsiasi" || condizioni.acqua.includes(acqua);
+                const soleValido = sole === "qualsiasi" || condizioni.sole.includes(sole);
+
+                elemento.style.display = (terrenoValido && acquaValida && soleValido) ? "block" : "none";
+            } else {
+                elemento.style.display = "none";
+            }
         });
     }
 
     // Assegna il filtro agli eventi
-    [terrenoSelect, acquaSelect, soleSelect].forEach(select => select.addEventListener("change", filtraCatalogo));
+    [terrenoSelect, acquaSelect, soleSelect].forEach(select => {
+        select.addEventListener("change", filtraCatalogo);
+    });
+
+    // Esegui il filtro iniziale
+    filtraCatalogo();
 });
