@@ -118,12 +118,12 @@ body {
     z-index: 1;
     text-align: left;
     font-size: 4em;
-    color: #ffae00;
+    color: #ffffff;
     margin-left: 40px;
 }
 .Scritte-Text p {
     width: 50%;
-    margin-left: 20px;
+    margin-left: 40px;
     margin-top: -10px;
     font-family: 'Helvetica Neue', sans-serif;
     font-weight: bold;
