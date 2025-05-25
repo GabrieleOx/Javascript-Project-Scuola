@@ -53,4 +53,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         animaLettereSVG(); // Avvia l'animazione
     }
+
+    // Effetto ingrandimento sui paragrafi affiancati
+    const paragrafi = document.querySelectorAll('.paragrafo-singolo');
+    paragrafi.forEach(paragrafo => {
+        paragrafo.addEventListener('mouseenter', function() {
+            paragrafo.style.transform = 'scale(1.07)';
+            paragrafo.style.transition = 'transform 0.2s';
+        });
+        paragrafo.addEventListener('mouseleave', function() {
+            paragrafo.style.transform = '';
+        });
+    });
 });
