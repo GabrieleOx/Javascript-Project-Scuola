@@ -1,8 +1,8 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f8f8;
-  color: #000000;
+  background-color: #4CAF50;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,11 +53,35 @@ body {
 #rain
 {
   position: absolute;
-  right: 5vw;
-  top: 540px; /* regola questo valore per abbassare/alzare il canvas rispetto al top della pagina */
+  top: 540px;
   border: none;
   background: none;
-  margin: 0;
   display: block;
-  /* nessun margin-left/margin-top */
+  left: 60%; /* avvicina il canvas della pioggia a destra */
+}
+
+.fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #4CAF50;
+    z-index: 1000;
+}
+.fixed-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+.fixed-nav li {
+    margin: 0 15px;
+}
+.fixed-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 15px 0;
+    display: block;
 }

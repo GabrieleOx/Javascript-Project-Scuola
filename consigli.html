@@ -4,63 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="Styles/consigli_style.css">
-    <title>Giardino</title>
+    <title>Happy Plants</title>
 </head>
 
 
 <body>
 
+
+<nav class="fixed-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="catalogo.html">Catalogo</a></li>
+            <li><a href="memory.html">Memory</a></li>
+        </ul>
+    </nav>
+
+
  <h1 class="fade-title">Consigli su come crescere una pianta</h1>
 
   <div class="spacer"></div>
 
-  <!-- Container per il testo e il sole -->
-  <div class="fade-text sun-container">
+  
+  <div class="fade-text">
     
       <p>☀️​Quanto sole deve prendere?☀️​</p>
       <p>
         La quantita' di sole necessaria varia da pianta a pianta;<br>
-        Pieno sole☀️​	: 6+ ore al giorno    (giardini o balconi a sud)<br>
-        Mezz’ombra🌤️​ 	: 3–6 ore al giorno   (dietro alberi o tende)<br>
-        Ombra🌥️ : meno​ di 3 ore al giorno   (angoli o zone a nord)<br>
+        <b>Pieno sole</b>☀️​	: <b>6+ ore al giorno</b>    (giardini o balconi a sud)<br><br>
+        <b>Mezz’ombra</b>🌤️​ 	: <b>3–6 ore al giorno</b>   (dietro alberi o tende)<br><br>
+        <b>Ombra</b>🌥️ : <b>meno​ di 3 ore al giorno</b>   (angoli o zone a nord)<br><br>
         Per capire se la pianta prende abbastanza luce basta guardare
-        le foglie,<br> se sono troppo pallide o cadenti c'e' poca luce, se invece 
-        sono scottate prendono troppa luce.
+        le foglie,<br> se sono troppo pallide o cadenti c'e' <b>poca luce</b>, se invece 
+        sono scottate prendono <b>troppa luce</b>.
       </p>
     
-    <canvas id="sun-cloud" width="600" height="400"></canvas>
-    <div class="spacer"></div>
+    <canvas id="sun-cloud" width="600" height="600"></canvas>
+    
 
   </div>
 
-  
+  <div class="spacer"></div>
 
   <div class="fade-text">
 
-    <canvas id="rain" width="600" height="500"></canvas>
+    <canvas id="rain" width="800" height="600""></canvas>
     <p>💧Di quanta acqua ha bisogno?💧</p>
     <p>
     La quantità di acqua di cui una pianta ha bisogno non segue una regola unica,
-    ma dipende da diversi fattori, come il tipo di pianta,
-    le condizioni ambientali, il terreno, la posizione e la stagione.<br>
+    ma dipende da diversi fattori, come il <b>tipo di pianta</b>,
+    le <b>condizioni ambientali</b>, il <b>terreno</b>, la <b>posizione</b> e la <b>stagione</b>.<br>
     Ogni pianta ha esigenze diverse.<br><br>
-    Tipo di pianta<br><br>
-    Piante tropicali🌲​ → +💧<br>
-    Piante grasse🌵​​   → --💧<br><br>
-    Stagione<br><br>
-    Estate⛱️ → +💧<br>
-    Inverno🏔️​ → -💧<br><br>
-    Terreno<br><br>
-    Sabbioso🏜️​ → +💧<br>
-    Argilloso🧱​ → -💧<br><br>
-    Posizione<br><br>
-    Al sole🔆 → +💧<br>
-    In ombra o in casa🔅​ → -💧<br><br>
+    <b>Tipo di pianta</b><br><br>
+    <b>Piante tropicali</b>🌲​ → +💧<br>
+    <b>Piante grasse</b>🌵​​   → --💧<br><br>
+    <b>Stagione</b><br><br>
+    <b>Estate</b>⛱️ → +💧<br>
+    <b>Inverno</b>🏔️​ → -💧<br><br>
+    <b>Terreno</b><br><br>
+    <b>Sabbioso</b>🏜️​ → +💧<br>
+    <b>Argilloso</b>🧱​ → -💧<br><br>
+    <b>Posizione</b><br><br>
+    <b>Al sole</b>🔆 → +💧<br>
+    <b>In ombra o in casa</b>🔅​ → -💧<br><br>
+    </p>
+
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="fade-text">
+    
+    <p>🌡️A che temperatura deve stare?🌡️</p>
+    <p>
+      La temperatura ideale per la maggior parte delle piante è tra <b>15°C e 25°C</b>.<br>
+      <b>Piante tropicali</b>🌴 → +🌡️<br>
+      <b>Piante grasse</b>🌵 → --🌡️<br>
+      <b>Piante alpine</b>🏔️ → -🌡️<br><br>
+      <b>Evita sbalzi di temperatura</b>, correnti d'aria fredda e posizioni vicino a fonti di calore o freddo.<br>
+      Se le foglie ingialliscono o cadono, <b>controlla la temperatura dell'ambiente</b>.
+    </p>
+  </div>
+  
+  <div class="spacer"></div> 
+
+  <div class="fade-text">
+    <p>​Quanto deve essere grande il vaso o il terreno?​</p>
+    <p>
+      La dimensione del vaso o della porzione di terreno è <b>importante</b> per la crescita sana della pianta.<br>
+      Un vaso <b>troppo piccolo</b> limita lo sviluppo delle radici e la crescita della pianta.<br>
+      Un vaso <b>troppo grande</b> può trattenere troppa acqua e causare marciume radicale.<br><br>
+      <b>Tipo di pianta</b><br><br>
+      <b>Piante a crescita rapida</b>🌱 → vaso leggermente più grande<br>
+      <b>Piante grasse</b>🌵 → vaso piccolo, ben drenato<br>
+      <b>Piante con radici profonde</b>🌳 → vaso alto o terreno profondo<br><br>
+      <b>Quando cambiare vaso?</b><br>
+      Se le radici fuoriescono dai fori o la pianta cresce poco, è il momento di <b>rinvasare</b>!<br><br>
+      <b>Consigli generali</b><br>
+      - Scegli un vaso <b>2-4 cm più largo</b> del pane di radici<br>
+      - Assicurati che il vaso abbia <b>fori di drenaggio</b><br>
+      - Per piante da esterno, considera la <b>profondità del terreno</b><br>
     </p>
   </div>
 
-  
-   
+  <div class="spacer"></div> 
+
+
+
+
 <script src="Scripts/consigli_script.js"></script> 
 </body>
 </html>
