@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -12,7 +13,7 @@ body {
 }
 
 .spacer {
-  height: 18vh;
+  height: 20vh;
 }
 
 .fade-text {
@@ -43,8 +44,7 @@ body {
 
 #sun-cloud {
   position:absolute;
-  border: none; 
-  
+  border: none;
   margin-top: -600px;
   margin-left: 80%;
   background:none;
@@ -57,31 +57,55 @@ body {
   border: none;
   background: none;
   display: block;
-  left: 60%; /* avvicina il canvas della pioggia a destra */
+  left: 62%; /* sposta il canvas della pioggia meno a destra */
 }
-
-.fixed-nav {
+.barra-navigazione-fissa {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: #4CAF50;
+    background: #ffffff;
     z-index: 1000;
+    display: flex;
+    align-items: center;
 }
-.fixed-nav ul {
+.barra-navigazione-fissa .logo-navigazione {
+    margin-left: 30px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+.barra-navigazione-fissa .logo-navigazione img {
+    height: 60px;
+    width: auto;
+    display: block;
+    transition: transform 0.2s ease;
+}
+.barra-navigazione-fissa ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     justify-content: center;
+    gap: 400px;
+    flex: 1;
 }
-.fixed-nav li {
-    margin: 0 15px;
+.barra-navigazione-fissa li {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: 'Pacifico', cursive;
+    font-style: italic;
+    color: rgb(0, 0, 0);
 }
-.fixed-nav a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
+.barra-navigazione-fissa a {
+    color: rgb(0, 0, 0);
+    text-decoration: bold;
     padding: 15px 0;
     display: block;
+    transition: transform 0.2s ease;
 }
+.barra-navigazione-fissa a:hover, .barra-navigazione-fissa .logo-navigazione:hover img {
+    transform: scale(1.15);
+}
+
+/* Nessuna modifica necessaria in questo file CSS per rallentare le nuvole: la velocità si regola solo in JS. */

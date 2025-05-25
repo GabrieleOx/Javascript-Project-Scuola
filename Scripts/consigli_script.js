@@ -1,81 +1,236 @@
 // Mostra il testo con effetto fade quando si scrolla
-function revealTextOnScroll() {
-  const elements = document.querySelectorAll('.fade-text, .fade-title');
-  const trigger = window.innerHeight * 0.7;
-  elements.forEach(function(element) {
-    if (element.getBoundingClientRect().top < trigger) {
-      element.classList.add('visible');
+function mostraTestoConFadeScroll() {
+  const elementi = document.querySelectorAll('.fade-text, .fade-title');
+  const soglia = window.innerHeight * 0.7;
+  elementi.forEach(function(elemento) {
+    if (elemento.getBoundingClientRect().top < soglia) {
+      elemento.classList.add('visible');
     }
   });
 }
-window.addEventListener('scroll', revealTextOnScroll);
-window.addEventListener('load', revealTextOnScroll);
+window.addEventListener('scroll', mostraTestoConFadeScroll);
+window.addEventListener('load', mostraTestoConFadeScroll);
 
 // Prendi i canvas dal documento
 const canvasSole = document.getElementById('sun-cloud');
 const canvasPioggia = document.getElementById('rain');
 let ctx = null;
-if (canvasSole) {
-  // Aumenta l'altezza del canvas del sole
-  canvasSole.height = 500; // era 400
-  ctx = canvasSole.getContext('2d');
-}
-let ctxRain = null;
-if (canvasPioggia) {
-  // Sposta a destra il canvas delle nuvole (pioggia)
-  canvasPioggia.style.marginLeft = "80px";
-  // Aumenta la dimensione del canvas se vuoi anche qui (opzionale)
-  // canvasPioggia.width = 700;
-  ctxRain = canvasPioggia.getContext('2d');
+let ctxPioggia = null;
+let canvasTermometro = document.getElementById('thermo');
+let ctxTermometro = null;
+if (canvasTermometro) {
+  ctxTermometro = canvasTermometro.getContext('2d');
 }
 
-// Dati per il sole
-let sun = {
-  x: 300,
-  y: 200,
-  radius: 50,
-  numRays: 10,
-  rayLength: 20,
-  rayAngle: 0,
-  raySpeed: 0.003
+// Variabili per animazione termometro
+let termometro = {
+  min: 0,
+  max: 100,
+  valore: 60,
+  direzione: 1
 };
 
-// Dati per la nuvola vicino al sole
-let cloud = {
-  x: 300,
-  y: 130,
-  speed: 0.05, // più lenta
-  direction: -1
+function disegnaTermometro() {
+  if (!ctxTermometro || !canvasTermometro) return;
+  ctxTermometro.clearRect(0, 0, canvasTermometro.width, canvasTermometro.height);
+
+  // Parametri realistici
+  const cx = canvasTermometro.width / 2;
+  const topY = 40;
+  const bottomY = canvasTermometro.height - 40;
+  const larghezzaTubo = 18;
+  const tuboInterno = 10;
+  const raggioBulbo = 28;
+  const coloreMercurio = "#e74c3c";
+  const coloreVetro = "#e0e0e0";
+  const coloreOmbra = "#aaa";
+
+  // Ombra dietro
+  ctxTermometro.save();
+  ctxTermometro.shadowColor = coloreOmbra;
+  ctxTermometro.shadowBlur = 18;
+
+  // Corpo vetro
+  ctxTermometro.beginPath();
+  ctxTermometro.moveTo(cx - larghezzaTubo / 2, topY);
+  ctxTermometro.lineTo(cx - larghezzaTubo / 2, bottomY - raggioBulbo);
+  ctxTermometro.arc(cx, bottomY - raggioBulbo, larghezzaTubo / 2, Math.PI, 0, false);
+  ctxTermometro.lineTo(cx + larghezzaTubo / 2, topY);
+  ctxTermometro.closePath();
+  ctxTermometro.fillStyle = coloreVetro;
+  ctxTermometro.globalAlpha = 0.7;
+  ctxTermometro.fill();
+  ctxTermometro.globalAlpha = 1;
+  ctxTermometro.shadowBlur = 0;
+
+  ctxTermometro.restore();
+
+  // Bulbo vetro
+  ctxTermometro.beginPath();
+  ctxTermometro.arc(cx, bottomY, raggioBulbo, 0, Math.PI * 2);
+  ctxTermometro.fillStyle = coloreVetro;
+  ctxTermometro.globalAlpha = 0.7;
+  ctxTermometro.fill();
+  ctxTermometro.globalAlpha = 1;
+
+  // Mercurio (colonna)
+  let minY = bottomY - raggioBulbo;
+  let maxY = topY + 10;
+  let h = minY - maxY;
+  let yMercurio = minY - (termometro.valore / 100) * h;
+
+  ctxTermometro.beginPath();
+  ctxTermometro.moveTo(cx, minY);
+  ctxTermometro.lineTo(cx, yMercurio);
+  ctxTermometro.lineWidth = tuboInterno;
+  ctxTermometro.strokeStyle = coloreMercurio;
+  ctxTermometro.shadowColor = coloreMercurio;
+  ctxTermometro.shadowBlur = 10;
+  ctxTermometro.stroke();
+  ctxTermometro.shadowBlur = 0;
+
+  // Mercurio (bulbo)
+  ctxTermometro.beginPath();
+  ctxTermometro.arc(cx, bottomY, raggioBulbo - 7, 0, Math.PI * 2);
+  ctxTermometro.fillStyle = coloreMercurio;
+  ctxTermometro.shadowColor = coloreMercurio;
+  ctxTermometro.shadowBlur = 18;
+  ctxTermometro.fill();
+  ctxTermometro.shadowBlur = 0;
+
+  // Riflesso vetro (colonna)
+  ctxTermometro.save();
+  ctxTermometro.globalAlpha = 0.18;
+  ctxTermometro.beginPath();
+  ctxTermometro.ellipse(cx - 8, bottomY - 10, 8, 22, -0.3, 0, Math.PI * 2);
+  ctxTermometro.fillStyle = "#fff";
+  ctxTermometro.fill();
+  ctxTermometro.globalAlpha = 1;
+  ctxTermometro.restore();
+
+  // Riflesso nel bulbo (piccolo cerchietto in alto a sinistra)
+  ctxTermometro.save();
+  ctxTermometro.globalAlpha = 0.32;
+  ctxTermometro.beginPath();
+  ctxTermometro.arc(cx - raggioBulbo / 2.5, bottomY - raggioBulbo / 2.5, raggioBulbo / 5, 0, Math.PI * 2);
+  ctxTermometro.fillStyle = "#fff";
+  ctxTermometro.fill();
+  ctxTermometro.globalAlpha = 1;
+  ctxTermometro.restore();
+
+  // Scala graduata
+  ctxTermometro.lineWidth = 2;
+  ctxTermometro.strokeStyle = "#fff";
+  for (let i = 0; i <= 10; i++) {
+    let y = minY - (i / 10) * h;
+    ctxTermometro.beginPath();
+    ctxTermometro.moveTo(cx + larghezzaTubo / 2 + 3, y);
+    ctxTermometro.lineTo(cx + larghezzaTubo / 2 + 13, y);
+    ctxTermometro.stroke();
+    // Etichetta temperatura (più piccola)
+    ctxTermometro.font = "bold 0.55em Segoe UI, Arial";
+    ctxTermometro.fillStyle = "#fff";
+    ctxTermometro.textAlign = "left";
+    let temp = Math.round((i / 10) * 20 + 10); // 10°C - 30°C
+    ctxTermometro.fillText(temp + "°", cx + larghezzaTubo / 2 + 16, y + 3);
+  }
+  ctxTermometro.restore();
+}
+
+function animaTermometro() {
+  if (!canvasTermometro) return;
+  // Oscilla tra 10 e 30 (nuova scala)
+  termometro.valore += 0.02 * termometro.direzione;
+  if (termometro.valore > 80) { termometro.valore = 80; termometro.direzione = -1; }
+  if (termometro.valore < 15) { termometro.valore = 15; termometro.direzione = 1; }
+  disegnaTermometro();
+  requestAnimationFrame(animaTermometro);
+}
+
+// Funzione per adattare i canvas alla finestra
+function ridimensionaCanvas() {
+  if (canvasSole) {
+    canvasSole.width = window.innerWidth * 0.45;
+    canvasSole.height = window.innerHeight * 0.6;
+    ctx = canvasSole.getContext('2d');
+  }
+  if (canvasPioggia) {
+    canvasPioggia.width = window.innerWidth * 0.45;
+    canvasPioggia.height = window.innerHeight * 0.6;
+    canvasPioggia.style.marginLeft = (window.innerWidth * 0.05) + "px";
+    ctxPioggia = canvasPioggia.getContext('2d');
+  }
+}
+ridimensionaCanvas();
+window.addEventListener('resize', () => {
+  ridimensionaCanvas();
+  aggiornaOggettiScene();
+});
+
+// Dati per il sole (valori relativi)
+let sole = {
+  x: 0,
+  y: 0,
+  raggio: 0,
+  numRaggi: 10,
+  lunghezzaRaggio: 0,
+  angoloRaggio: 0,
+  velocitaRaggio: 0.003
+};
+
+// Dati per la nuvola vicino al sole (valori relativi)
+let nuvola = {
+  x: 0,
+  y: 0,
+  baseX: 0,
+  baseY: 0,
+  velocita: 0.015,
+  direzione: -1,
+  t: 0 // tempo per animazione
 };
 
 // Dati per le nuvole e la pioggia
-let cloudsRain = [];
-let drops = [];
-if (canvasPioggia) {
-  cloudsRain = [
-    { x: 200, y: 110, dx: -0.01, size: 1.2, min: 180, max: 240 },   // y aumentato di 20
-    { x: 320, y: 110, dx: -0.04, size: 1.5, min: 300, max: 370 },   // y aumentato di 20
-    { x: 400, y: 125, dx: 0.03, size: 1.4, min: 380, max: 440 },    // y aumentato di 20
-    { x: 480, y: 100, dx: 0.02, size: 1.1, min: 470, max: 520 },    // y aumentato di 20
-    { x: 260, y: 130, dx: 0.05, size: 1.3, min: 240, max: 300 }     // y aumentato di 20
-  ];
-  drops = [];
-  for (let i = 0; i < 14; i++) { // meno pioggia (prima era 24)
-    drops.push({
-      x: 180 + Math.random() * 220, // restringi la larghezza da destra (prima era 340)
-      y: 180 + Math.random() * (canvasPioggia.height / 2 - 60),
-      length: 15 + Math.random() * 10,
-      speed: 3 + Math.random() * 2
-    });
+let nuvolePioggia = [];
+let gocce = [];
+
+// Funzione per aggiornare le posizioni e dimensioni in base al canvas
+function aggiornaOggettiScene() {
+  if (canvasSole) {
+    sole.x = canvasSole.width * 0.43;
+    sole.y = canvasSole.height * 0.4;
+    sole.raggio = Math.min(canvasSole.width, canvasSole.height) * 0.09;
+    sole.lunghezzaRaggio = sole.raggio * 0.4;
+    nuvola.baseX = canvasSole.width * 0.43;
+    nuvola.baseY = canvasSole.height * 0.26;
+    nuvola.velocita = 0.015;
+  }
+  if (canvasPioggia) {
+    nuvolePioggia = [
+      { x: canvasPioggia.width * 0.29, y: canvasPioggia.height * 0.22, dx: -0.001, size: 1.2, min: canvasPioggia.width * 0.26, max: canvasPioggia.width * 0.35 },
+      { x: canvasPioggia.width * 0.47, y: canvasPioggia.height * 0.22, dx: -0.003, size: 1.5, min: canvasPioggia.width * 0.44, max: canvasPioggia.width * 0.54 },
+      { x: canvasPioggia.width * 0.59, y: canvasPioggia.height * 0.25, dx: 0.0015, size: 1.4, min: canvasPioggia.width * 0.56, max: canvasPioggia.width * 0.67 },
+      { x: canvasPioggia.width * 0.71, y: canvasPioggia.height * 0.20, dx: 0.001, size: 1.1, min: canvasPioggia.width * 0.69, max: canvasPioggia.width * 0.78 },
+      { x: canvasPioggia.width * 0.38, y: canvasPioggia.height * 0.26, dx: 0.004, size: 1.3, min: canvasPioggia.width * 0.34, max: canvasPioggia.width * 0.43 }
+    ];
+    gocce = [];
+    for (let i = 0; i < 14; i++) {
+      gocce.push({
+        x: canvasPioggia.width * 0.24 + Math.random() * (canvasPioggia.width * 0.32),
+        y: canvasPioggia.height * 0.36 + Math.random() * (canvasPioggia.height * 0.25),
+        lunghezza: canvasPioggia.height * 0.03 + Math.random() * (canvasPioggia.height * 0.02),
+        velocita: 3 + Math.random() * 2
+      });
+    }
   }
 }
+aggiornaOggettiScene();
 
 // Disegna il sole
-function drawSun() {
+function disegnaSole() {
   if (!ctx) return;
   ctx.save();
   ctx.beginPath();
-  ctx.arc(sun.x, sun.y, sun.radius, 0, Math.PI * 2);
+  ctx.arc(sole.x, sole.y, sole.raggio, 0, Math.PI * 2);
   ctx.fillStyle = "yellow";
   ctx.shadowColor = "rgba(255, 165, 0, 0.7)";
   ctx.shadowBlur = 30;
@@ -85,244 +240,133 @@ function drawSun() {
   ctx.restore();
 }
 
+// Variabile per animare la lunghezza dei raggi
+let angoloPulseRaggio = 0;
+
 // Disegna i raggi del sole
-function drawRays() {
+function disegnaRaggi() {
   if (!ctx) return;
-  for (let i = 0; i < sun.numRays; i++) {
-    let angle = sun.rayAngle + (i * (Math.PI * 2 / sun.numRays));
-    let startX = sun.x + Math.cos(angle) * (sun.radius + 16);
-    let startY = sun.y + Math.sin(angle) * (sun.radius + 16);
+  angoloPulseRaggio += 0.012;
+  let pulse = 0.65 + 0.35 * Math.sin(angoloPulseRaggio);
+  let lunghezzaDinamica = sole.lunghezzaRaggio * pulse;
+  for (let i = 0; i < sole.numRaggi; i++) {
+    let angolo = sole.angoloRaggio + (i * (Math.PI * 2 / sole.numRaggi));
+    let startX = sole.x + Math.cos(angolo) * (sole.raggio + 16);
+    let startY = sole.y + Math.sin(angolo) * (sole.raggio + 16);
     ctx.save();
     ctx.translate(startX, startY);
-    ctx.rotate(angle);
+    ctx.rotate(angolo);
     ctx.fillStyle = "orange";
     ctx.shadowColor = "rgba(255, 165, 0, 0.5)";
     ctx.shadowBlur = 50;
-    ctx.fillRect(0, -4, sun.rayLength, 8);
+    ctx.fillRect(0, -4, lunghezzaDinamica, 8);
     ctx.restore();
   }
 }
 
 // Disegna la nuvola vicino al sole
-function drawCloud() {
+function disegnaNuvola() {
   if (!ctx) return;
+  nuvola.t += 0.003;
+  let offsetX = Math.sin(nuvola.t) * (sole.raggio * 0.4);
+  let offsetY = Math.cos(nuvola.t * 0.7) * (sole.raggio * 0.10) + sole.raggio * 0.5;
+  let cx = (nuvola.baseX || nuvola.x) + offsetX;
+  let cy = (nuvola.baseY || nuvola.y) + offsetY;
   ctx.save();
   ctx.shadowColor = "rgba(255, 229, 80, 0.62)";
   ctx.shadowBlur = 40;
   ctx.fillStyle = "white";
   ctx.beginPath();
-  ctx.arc(cloud.x, cloud.y, 40, 0, Math.PI * 2);
-  ctx.arc(cloud.x + 40, cloud.y - 20, 50, 0, Math.PI * 2);
-  ctx.arc(cloud.x + 80, cloud.y, 40, 0, Math.PI * 2);
-  ctx.arc(cloud.x + 40, cloud.y + 20, 45, 0, Math.PI * 2);
+  ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+  ctx.arc(cx + 40, cy - 20, 50, 0, Math.PI * 2);
+  ctx.arc(cx + 80, cy, 40, 0, Math.PI * 2);
+  ctx.arc(cx + 40, cy + 20, 45, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 }
 
 // Disegna una nuvola per la pioggia
-function drawCloudRain(cx, cy, scale) {
-  if (!ctxRain) return;
-  ctxRain.save();
-  ctxRain.translate(cx, cy);
-  ctxRain.scale(scale, scale);
-  ctxRain.beginPath();
-  ctxRain.arc(0, 0, 40, 0, Math.PI * 2);
-  ctxRain.arc(40, -20, 50, 0, Math.PI * 2);
-  ctxRain.arc(80, 0, 40, 0, Math.PI * 2);
-  ctxRain.arc(40, 20, 45, 0, Math.PI * 2);
-  ctxRain.fillStyle = "#e0e7ef";
-  ctxRain.globalAlpha = 0.97;
-  ctxRain.shadowColor = "#b0b8c6";
-  ctxRain.shadowBlur = 18;
-  ctxRain.fill();
-  ctxRain.globalAlpha = 1;
-  ctxRain.shadowBlur = 0;
-  ctxRain.restore();
+function disegnaNuvolaPioggia(cx, cy, scala) {
+  if (!ctxPioggia) return;
+  ctxPioggia.save();
+  ctxPioggia.translate(cx, cy);
+  ctxPioggia.scale(scala, scala);
+  ctxPioggia.beginPath();
+  ctxPioggia.arc(0, 0, 40, 0, Math.PI * 2);
+  ctxPioggia.arc(40, -20, 50, 0, Math.PI * 2);
+  ctxPioggia.arc(80, 0, 40, 0, Math.PI * 2);
+  ctxPioggia.arc(40, 20, 45, 0, Math.PI * 2);
+  ctxPioggia.fillStyle = "#e0e7ef";
+  ctxPioggia.globalAlpha = 0.97;
+  ctxPioggia.shadowColor = "#b0b8c6";
+  ctxPioggia.shadowBlur = 18;
+  ctxPioggia.fill();
+  ctxPioggia.globalAlpha = 1;
+  ctxPioggia.shadowBlur = 0;
+  ctxPioggia.restore();
 }
 
-// Disegna la pioggia
-function drawRain() {
-  if (!ctxRain) return;
-  ctxRain.strokeStyle = "#8ec6f7";
-  ctxRain.lineWidth = 2;
-  for (let i = 0; i < drops.length; i++) {
-    let drop = drops[i];
-    ctxRain.beginPath();
-    ctxRain.moveTo(drop.x, drop.y);
-    ctxRain.lineTo(drop.x, drop.y + drop.length);
-    ctxRain.stroke();
+// Disegna la pioggia con effetto fade out graduale e continuo
+function disegnaPioggia() {
+  if (!ctxPioggia) return;
+  ctxPioggia.save();
+  ctxPioggia.strokeStyle = "#8ec6f7";
+  ctxPioggia.lineWidth = 2;
+  const offsetX = canvasPioggia.width * 0.12;
+  for (let i = 0; i < gocce.length; i++) {
+    let goccia = gocce[i];
+    let fade = 1 - Math.pow(goccia.y / canvasPioggia.height, 2.2);
+    fade = Math.max(0, Math.min(1, fade));
+    ctxPioggia.globalAlpha = fade;
+    ctxPioggia.beginPath();
+    ctxPioggia.moveTo(goccia.x + offsetX, goccia.y);
+    ctxPioggia.lineTo(goccia.x + offsetX, goccia.y + goccia.lunghezza);
+    ctxPioggia.stroke();
   }
-}
-
-// Disegna il terreno sotto il sole
-function drawGroundSun() {
-  if (!ctx || !canvasSole) return;
-  ctx.save();
-  ctx.fillStyle = "#6e5b36"; // più scuro
-  ctx.beginPath();
-  // Arco più piccolo
-  ctx.moveTo(100, canvasSole.height - 20);
-  ctx.quadraticCurveTo(
-    canvasSole.width / 2,
-    canvasSole.height - 55, // più alto = più piccolo
-    canvasSole.width - 100,
-    canvasSole.height - 20
-  );
-  ctx.lineTo(canvasSole.width - 100, canvasSole.height);
-  ctx.lineTo(100, canvasSole.height);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-}
-
-// Disegna il terreno sotto la pioggia
-function drawGroundRain() {
-  if (!ctxRain || !canvasPioggia) return;
-  ctxRain.save();
-  ctxRain.fillStyle = "#4d4025"; // più scuro
-  ctxRain.beginPath();
-  // Arco più piccolo
-  ctxRain.moveTo(90, canvasPioggia.height - 25);
-  ctxRain.quadraticCurveTo(
-    canvasPioggia.width / 2,
-    canvasPioggia.height - 65, // più alto = più piccolo
-    canvasPioggia.width - 90,
-    canvasPioggia.height - 25
-  );
-  ctxRain.lineTo(canvasPioggia.width - 90, canvasPioggia.height);
-  ctxRain.lineTo(90, canvasPioggia.height);
-  ctxRain.closePath();
-  ctxRain.fill();
-  ctxRain.restore();
-}
-
-// Disegna un vaso con germoglio sotto il sole
-function drawPotAndSproutSun() {
-  if (!ctx || !canvasSole) return;
-  ctx.save();
-  // Germoglio (stelo) - PRIMA del vaso, dimensioni ridotte
-  ctx.beginPath();
-  ctx.strokeStyle = "#3b7d2c";
-  ctx.lineWidth = 5; // meno spesso
-  ctx.moveTo(300, canvasSole.height - 90 + 30); // meno in basso
-  ctx.bezierCurveTo(
-    305, canvasSole.height - 105 + 30,
-    295, canvasSole.height - 145 + 30,
-    300, canvasSole.height - 180 + 30
-  );
-  ctx.stroke();
-  // Foglioline: sinistra più piccola, destra più grande
-  ctx.fillStyle = "#4fc14f";
-  ctx.beginPath();
-  ctx.ellipse(292, canvasSole.height - 155 + 30, 10, 4, -0.5, 0, Math.PI * 2); // sinistra
-  ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(308, canvasSole.height - 160 + 30, 15, 7, 0.5, 0, Math.PI * 2); // destra più grande
-  ctx.fill();
-  // Vaso più piccolo
-  ctx.fillStyle = "#b97a56";
-  ctx.strokeStyle = "#a05a2c";
-  ctx.lineWidth = 4;
-  ctx.beginPath();
-  ctx.moveTo(275, canvasSole.height - 60 + 30); // bordo alto sinistro
-  ctx.lineTo(325, canvasSole.height - 60 + 30); // bordo alto destro
-  ctx.lineTo(315, canvasSole.height - 20 + 30); // bordo basso destro
-  ctx.lineTo(285, canvasSole.height - 20 + 30); // bordo basso sinistro
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
-  // Bordo superiore (ellisse di profilo) più piccolo
-  ctx.beginPath();
-  ctx.ellipse(300, canvasSole.height - 60 + 30, 22, 8, 0, 0, Math.PI * 2);
-  ctx.fillStyle = "#d2a074";
-  ctx.fill();
-  ctx.stroke();
-  ctx.restore();
-}
-
-// Disegna un vaso con germoglio sotto la pioggia
-function drawPotAndSproutRain() {
-  if (!ctxRain || !canvasPioggia) return;
-  ctxRain.save();
-  // Germoglio (stelo) - PRIMA del vaso, dimensioni ridotte
-  ctxRain.beginPath();
-  ctxRain.strokeStyle = "#2e6b23";
-  ctxRain.lineWidth = 5;
-  ctxRain.moveTo(300, canvasPioggia.height - 100 + 30);
-  ctxRain.bezierCurveTo(
-    305, canvasPioggia.height - 130 + 30,
-    295, canvasPioggia.height - 170 + 30,
-    300, canvasPioggia.height - 210 + 30
-  );
-  ctxRain.stroke();
-  // Foglioline: sinistra più piccola, destra più grande
-  ctxRain.fillStyle = "#3fa13f";
-  ctxRain.beginPath();
-  ctxRain.ellipse(292, canvasPioggia.height - 185 + 30, 10, 4, -0.5, 0, Math.PI * 2); // sinistra
-  ctxRain.fill();
-  ctxRain.beginPath();
-  ctxRain.ellipse(308, canvasPioggia.height - 190 + 30, 15, 7, 0.5, 0, Math.PI * 2); // destra più grande
-  ctxRain.fill();
-  // Vaso più piccolo
-  ctxRain.fillStyle = "#a86b32";
-  ctxRain.strokeStyle = "#7a4a1c";
-  ctxRain.lineWidth = 4;
-  ctxRain.beginPath();
-  ctxRain.moveTo(275, canvasPioggia.height - 90 + 30); // bordo alto sinistro
-  ctxRain.lineTo(325, canvasPioggia.height - 90 + 30); // bordo alto destro
-  ctxRain.lineTo(315, canvasPioggia.height - 30 + 30); // bordo basso destro
-  ctxRain.lineTo(285, canvasPioggia.height - 30 + 30); // bordo basso sinistro
-  ctxRain.closePath();
-  ctxRain.fill();
-  ctxRain.stroke();
-  // Bordo superiore (ellisse di profilo) più piccolo
-  ctxRain.beginPath();
-  ctxRain.ellipse(300, canvasPioggia.height - 90 + 30, 22, 8, 0, 0, Math.PI * 2);
-  ctxRain.fillStyle = "#c4905a";
-  ctxRain.fill();
-  ctxRain.stroke();
-  ctxRain.restore();
+  ctxPioggia.globalAlpha = 1;
+  ctxPioggia.restore();
 }
 
 // Animazione continua
-function animate() {
+function anima() {
   // Sole e nuvola
   if (ctx && canvasSole) {
     ctx.clearRect(0, 0, canvasSole.width, canvasSole.height);
-    drawPotAndSproutSun(); // vaso con germoglio sotto il sole
-    drawSun();
-    drawRays();
-    drawCloud();
-    sun.rayAngle += sun.raySpeed;
-    cloud.x += cloud.speed * cloud.direction;
-    if (cloud.x <= 275 || cloud.x >= 325) {
-      cloud.direction *= -1;
+    disegnaSole();
+    disegnaRaggi();
+    disegnaNuvola();
+    sole.angoloRaggio += sole.velocitaRaggio;
+    nuvola.x += nuvola.velocita * nuvola.direzione;
+    if (nuvola.x <= canvasSole.width * 0.39 || nuvola.x >= canvasSole.width * 0.47) {
+      nuvola.direzione *= -1;
     }
   }
 
   // Pioggia e nuvole
-  if (canvasPioggia && ctxRain) {
-    ctxRain.clearRect(0, 0, canvasPioggia.width, canvasPioggia.height);
-    drawPotAndSproutRain(); // vaso con germoglio sotto la pioggia
-    for (let i = 0; i < cloudsRain.length; i++) {
-      let c = cloudsRain[i];
-      drawCloudRain(c.x, c.y, c.size);
-      c.x += c.dx;
-      if (c.x < c.min || c.x > c.max) {
-        c.dx *= -1;
+  if (canvasPioggia && ctxPioggia) {
+    ctxPioggia.clearRect(0, 0, canvasPioggia.width, canvasPioggia.height);
+    for (let i = 0; i < nuvolePioggia.length; i++) {
+      let n = nuvolePioggia[i];
+      disegnaNuvolaPioggia(n.x, n.y, n.size);
+      n.x += n.dx * canvasPioggia.width * 0.01;
+      if (n.x < n.min || n.x > n.max) {
+        n.dx *= -1;
       }
     }
-    for (let i = 0; i < drops.length; i++) {
-      let drop = drops[i];
-      drop.y += drop.speed;
-      if (drop.y > canvasPioggia.height) {
-        drop.y = 180 + Math.random() * (canvasPioggia.height / 2 - 60);
-        drop.x = 180 + Math.random() * 220;
+    for (let i = 0; i < gocce.length; i++) {
+      let goccia = gocce[i];
+      goccia.y += goccia.velocita;
+      if (goccia.y > canvasPioggia.height) {
+        goccia.y = canvasPioggia.height * 0.36 + Math.random() * (canvasPioggia.height * 0.25);
+        goccia.x = canvasPioggia.width * 0.24 + Math.random() * (canvasPioggia.width * 0.32);
       }
     }
-    drawRain();
+    disegnaPioggia();
   }
-  requestAnimationFrame(animate);
+  requestAnimationFrame(anima);
 }
 
-window.onload = animate;
+window.onload = function() {
+  anima();
+  animaTermometro();
+};
