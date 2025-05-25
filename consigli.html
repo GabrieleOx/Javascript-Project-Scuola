@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
     <link rel="stylesheet" href="Styles/consigli_style.css">
     <title>Happy Plants</title>
 </head>
@@ -11,13 +11,16 @@
 <body>
 
 
-<nav class="fixed-nav">
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="catalogo.html">Catalogo</a></li>
-            <li><a href="memory.html">Memory</a></li>
-        </ul>
-    </nav>
+<nav class="barra-navigazione-fissa">
+  <a href="index.html" class="logo-navigazione">
+  <img src="Imgs/Margherita.png" alt="Logo Home">
+  </a>
+  <ul>
+      <li><a href="catalogo.html">Catalogo</a></li>
+      <li><a href="consigli.html">Consigli</a></li>
+      <li><a href="memory.html">Memory</a></li>
+  </ul>
+</nav>
 
 
  <h1 class="fade-title">Consigli su come crescere una pianta</h1>
@@ -26,63 +29,61 @@
 
   
   <div class="fade-text">
-    
-      <p>☀️​Quanto sole deve prendere?☀️​</p>
-      <p>
-        La quantita' di sole necessaria varia da pianta a pianta;<br>
-        <b>Pieno sole</b>☀️​	: <b>6+ ore al giorno</b>    (giardini o balconi a sud)<br><br>
-        <b>Mezz’ombra</b>🌤️​ 	: <b>3–6 ore al giorno</b>   (dietro alberi o tende)<br><br>
-        <b>Ombra</b>🌥️ : <b>meno​ di 3 ore al giorno</b>   (angoli o zone a nord)<br><br>
-        Per capire se la pianta prende abbastanza luce basta guardare
-        le foglie,<br> se sono troppo pallide o cadenti c'e' <b>poca luce</b>, se invece 
-        sono scottate prendono <b>troppa luce</b>.
-      </p>
-    
+    <p>☀️​Quanto sole deve prendere?☀️​</p>
+    <p>
+      La quantita' di sole necessaria varia da pianta a pianta;<br>
+      <b>Pieno sole</b>☀️​	: <b>6+ ore al giorno</b>    (giardini o balconi a sud)<br><br>
+      <b>Mezz’ombra</b>🌤️​ 	: <b>3–6 ore al giorno</b>   (dietro alberi o tende)<br><br>
+      <b>Ombra</b>🌥️ : <b>meno​ di 3 ore al giorno</b>   (angoli o zone a nord)<br><br>
+      Per capire se la pianta prende abbastanza luce basta guardare
+      le foglie,<br> se sono troppo pallide o cadenti c'e' <b>poca luce</b>, se invece 
+      sono scottate prendono <b>troppa luce</b>.
+    </p>
     <canvas id="sun-cloud" width="600" height="600"></canvas>
-    
-
   </div>
 
   <div class="spacer"></div>
 
   <div class="fade-text">
-
-    <canvas id="rain" width="800" height="600""></canvas>
     <p>💧Di quanta acqua ha bisogno?💧</p>
     <p>
-    La quantità di acqua di cui una pianta ha bisogno non segue una regola unica,
-    ma dipende da diversi fattori, come il <b>tipo di pianta</b>,
-    le <b>condizioni ambientali</b>, il <b>terreno</b>, la <b>posizione</b> e la <b>stagione</b>.<br>
-    Ogni pianta ha esigenze diverse.<br><br>
-    <b>Tipo di pianta</b><br><br>
-    <b>Piante tropicali</b>🌲​ → +💧<br>
-    <b>Piante grasse</b>🌵​​   → --💧<br><br>
-    <b>Stagione</b><br><br>
-    <b>Estate</b>⛱️ → +💧<br>
-    <b>Inverno</b>🏔️​ → -💧<br><br>
-    <b>Terreno</b><br><br>
-    <b>Sabbioso</b>🏜️​ → +💧<br>
-    <b>Argilloso</b>🧱​ → -💧<br><br>
-    <b>Posizione</b><br><br>
-    <b>Al sole</b>🔆 → +💧<br>
-    <b>In ombra o in casa</b>🔅​ → -💧<br><br>
+      La quantità di acqua di cui una pianta ha bisogno non segue una regola unica,
+      ma dipende da diversi fattori, come il <b>tipo di pianta</b>,
+      le <b>condizioni ambientali</b>, il <b>terreno</b>, la <b>posizione</b> e la <b>stagione</b>.<br>
+      Ogni pianta ha esigenze diverse.<br><br>
+      <b>Tipo di pianta</b><br><br>
+      <b>Piante tropicali</b>🌲​ → +💧<br>
+      <b>Piante grasse</b>🌵​​   → --💧<br><br>
+      <b>Stagione</b><br><br>
+      <b>Estate</b>⛱️ → +💧<br>
+      <b>Inverno</b>🏔️​ → -💧<br><br>
+      <b>Terreno</b><br><br>
+      <b>Sabbioso</b>🏜️​ → +💧<br>
+      <b>Argilloso</b>🧱​ → -💧<br><br>
+      <b>Posizione</b><br><br>
+      <b>Al sole</b>🔆 → +💧<br>
+      <b>In ombra o in casa</b>🔅​ → -💧<br><br>
     </p>
-
+    <canvas id="rain" width="800" height="600"></canvas>
   </div>
 
   <div class="spacer"></div>
 
   <div class="fade-text">
-    
-    <p>🌡️A che temperatura deve stare?🌡️</p>
-    <p>
-      La temperatura ideale per la maggior parte delle piante è tra <b>15°C e 25°C</b>.<br>
-      <b>Piante tropicali</b>🌴 → +🌡️<br>
-      <b>Piante grasse</b>🌵 → --🌡️<br>
-      <b>Piante alpine</b>🏔️ → -🌡️<br><br>
-      <b>Evita sbalzi di temperatura</b>, correnti d'aria fredda e posizioni vicino a fonti di calore o freddo.<br>
-      Se le foglie ingialliscono o cadono, <b>controlla la temperatura dell'ambiente</b>.
-    </p>
+    <div style="display: flex; align-items: flex-start;">
+      <div style="flex:1;">
+        <p>🌡️A che temperatura deve stare?🌡️</p>
+        <p>
+          La temperatura ideale per la maggior parte delle piante è tra <b>15°C e 25°C</b>.<br>
+          <b>Piante tropicali</b>🌴 → +🌡️<br>
+          <b>Piante grasse</b>🌵 → --🌡️<br>
+          <b>Piante alpine</b>🏔️ → -🌡️<br><br>
+          <b>Evita sbalzi di temperatura</b>, correnti d'aria fredda e posizioni vicino a fonti di calore o freddo.<br>
+          Se le foglie ingialliscono o cadono, <b>controlla la temperatura dell'ambiente</b>.
+        </p>
+      </div>
+      <canvas id="thermo" width="200" height="600" style="margin-left: 40px;"></canvas>
+    </div>
   </div>
   
   <div class="spacer"></div> 
@@ -103,6 +104,30 @@
       - Scegli un vaso <b>2-4 cm più largo</b> del pane di radici<br>
       - Assicurati che il vaso abbia <b>fori di drenaggio</b><br>
       - Per piante da esterno, considera la <b>profondità del terreno</b><br>
+    </p>
+  </div>
+
+  <div class="spacer"></div> 
+
+  <div class="fade-text">
+    <p>🌱​Tipi di terreno e loro caratteristiche🌱​</p>
+    <p>
+      <b>Terreno sabbioso</b> 🏜️<br>
+      - Drena molto velocemente<br>
+      - Poco fertile, si asciuga in fretta<br>
+      - Ideale per piante grasse e mediterranee<br><br>
+      <b>Terreno argilloso</b> 🧱<br>
+      - Trattiene molta acqua<br>
+      - Può diventare compatto e pesante<br>
+      - Buono per piante che amano l'umidità, ma attenzione ai ristagni<br><br>
+      <b>Terreno limoso</b> 🌾<br>
+      - Molto fertile e soffice<br>
+      - Trattiene bene acqua e nutrienti<br>
+      - Ottimo per la maggior parte delle piante da orto e da fiore<br><br>
+      <b>Terreno torboso</b> 🍂<br>
+      - Ricco di materia organica<br>
+      - Trattiene bene l'umidità<br>
+      - Perfetto per acidofile come azalee e ortensie<br>
     </p>
   </div>
 
