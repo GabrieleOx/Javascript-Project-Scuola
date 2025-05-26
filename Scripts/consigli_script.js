@@ -1,30 +1,48 @@
-// Fade-in effect for text on scroll
+// effetto fade in per testo durante scroll
+// Funzione che mostra il testo con effetto fade-in quando viene scrollato nella viewport
 function mostraTestoConFadeScroll() {
+  // seleziona tutti elementi con fade text o fade title
   const elementi = document.querySelectorAll('.fade-text, .fade-title');
+  // calcola soglia di visibilita
   const soglia = window.innerHeight * 0.7;
+  // aggiungi classe visible se elemento e visibile
   elementi.forEach(el => {
     if (el.getBoundingClientRect().top < soglia) el.classList.add('visible');
   });
 }
+// Aggiunge l'evento di scroll e load per attivare l'effetto fade-in
 window.addEventListener('scroll', mostraTestoConFadeScroll);
 window.addEventListener('load', mostraTestoConFadeScroll);
 
-// Canvas setup
+// setup canvas per sole pioggia termometro
+// Recupera i riferimenti ai canvas per sole, pioggia e termometro
 const canvasSole = document.getElementById('sun-cloud');
 const canvasPioggia = document.getElementById('rain');
 const canvasTermometro = document.getElementById('thermo');
+// Ottiene i context 2D dei canvas
+// 'let' dichiara una variabile con ambito di blocco (block scope), introdotta in ES6, più sicura di 'var'
 let ctx = canvasSole ? canvasSole.getContext('2d') : null;
 let ctxPioggia = canvasPioggia ? canvasPioggia.getContext('2d') : null;
 let ctxTermometro = canvasTermometro ? canvasTermometro.getContext('2d') : null;
 
-// Termometro animation state
+// stato animazione termometro
+// Oggetto che rappresenta lo stato del termometro animato
 let termometro = { min: 0, max: 100, valore: 60, direzione: 1 };
 
+// funzione per disegnare termometro
+// Disegna il termometro sul canvas in base al valore attuale
 function disegnaTermometro() {
+  // se canvas non esiste esci subito
   if (!ctxTermometro || !canvasTermometro) return;
   ctxTermometro.clearRect(0, 0, canvasTermometro.width, canvasTermometro.height);
-  const cx = canvasTermometro.width / 2, topY = 40, bottomY = canvasTermometro.height - 40;
+
+  // calcolo coordinate dimensioni principali
+  const cx = canvasTermometro.width / 2;
+  const topY = 40, bottomY = canvasTermometro.height - 40;
   const larghezzaTubo = 18, tuboInterno = 10, raggioBulbo = 28;
+
+  // disegna tubo esterno termometro
+  // Disegna il tubo esterno del termometro con ombra
   ctxTermometro.save();
   ctxTermometro.shadowColor = "#aaa";
   ctxTermometro.shadowBlur = 18;
@@ -40,23 +58,34 @@ function disegnaTermometro() {
   ctxTermometro.globalAlpha = 1;
   ctxTermometro.shadowBlur = 0;
   ctxTermometro.restore();
+
+  // disegna bulbo esterno
+  // Disegna il bulbo esterno del termometro
   ctxTermometro.beginPath();
   ctxTermometro.arc(cx, bottomY, raggioBulbo, 0, Math.PI * 2);
   ctxTermometro.fillStyle = "#e0e0e0";
   ctxTermometro.globalAlpha = 0.7;
   ctxTermometro.fill();
   ctxTermometro.globalAlpha = 1;
+
+  // calcola posizione mercurio in base a valore attuale
+  // Calcola la posizione della colonnina di mercurio in base al valore attuale
   let minY = bottomY - raggioBulbo, maxY = topY + 10, h = minY - maxY;
   let yMercurio = minY - (termometro.valore / 100) * h;
+
+  // disegna colonnina mercurio
+  // Disegna la colonnina di mercurio
   ctxTermometro.beginPath();
   ctxTermometro.moveTo(cx, minY);
   ctxTermometro.lineTo(cx, yMercurio);
   ctxTermometro.lineWidth = tuboInterno;
-  ctxTermometro.strokeStyle = "#e74c3c";
-  ctxTermometro.shadowColor = "#e74c3c";
+  ctxTermometro.strokeStyle = ctxTermometro.shadowColor = "#e74c3c";
   ctxTermometro.shadowBlur = 10;
   ctxTermometro.stroke();
   ctxTermometro.shadowBlur = 0;
+
+  // disegna bulbo interno mercurio
+  // Disegna il bulbo interno (mercurio) del termometro
   ctxTermometro.beginPath();
   ctxTermometro.arc(cx, bottomY, raggioBulbo - 7, 0, Math.PI * 2);
   ctxTermometro.fillStyle = "#e74c3c";
@@ -64,6 +93,9 @@ function disegnaTermometro() {
   ctxTermometro.shadowBlur = 18;
   ctxTermometro.fill();
   ctxTermometro.shadowBlur = 0;
+
+  // riflesso bulbo
+  // Disegna il riflesso sul bulbo del termometro
   ctxTermometro.save();
   ctxTermometro.globalAlpha = 0.32;
   ctxTermometro.beginPath();
@@ -72,24 +104,29 @@ function disegnaTermometro() {
   ctxTermometro.fill();
   ctxTermometro.globalAlpha = 1;
   ctxTermometro.restore();
+
+  // tacche testo temperatura
+  // Disegna le tacche e le etichette della temperatura
   ctxTermometro.lineWidth = 2;
   ctxTermometro.strokeStyle = "#fff";
+  ctxTermometro.font = "bold 0.55em segoue ui arial";
+  ctxTermometro.fillStyle = "#fff";
+  ctxTermometro.textAlign = "left";
   for (let i = 0; i <= 10; i++) {
     let y = minY - (i / 10) * h;
     ctxTermometro.beginPath();
     ctxTermometro.moveTo(cx + larghezzaTubo / 2 + 3, y);
     ctxTermometro.lineTo(cx + larghezzaTubo / 2 + 13, y);
     ctxTermometro.stroke();
-    ctxTermometro.font = "bold 0.55em Segoe UI, Arial";
-    ctxTermometro.fillStyle = "#fff";
-    ctxTermometro.textAlign = "left";
     let temp = Math.round((i / 10) * 20 + 10);
     ctxTermometro.fillText(temp + "°", cx + larghezzaTubo / 2 + 16, y + 3);
   }
-  ctxTermometro.restore();
 }
 
+// funzione animazione termometro
+// Anima il livello del mercurio nel termometro
 function animaTermometro() {
+  // aggiorna valore direzione mercurio
   if (!canvasTermometro) return;
   termometro.valore += 0.02 * termometro.direzione;
   if (termometro.valore > 80) { termometro.valore = 80; termometro.direzione = -1; }
@@ -98,13 +135,16 @@ function animaTermometro() {
   requestAnimationFrame(animaTermometro);
 }
 
-// Ridimensiona i canvas in base alla finestra
+// ridimensiona canvas in base a finestra
+// Ridimensiona i canvas in base alla dimensione della finestra
 function ridimensionaCanvas() {
+  // ridimensiona canvas sole
   if (canvasSole) {
     canvasSole.width = window.innerWidth * 0.45;
     canvasSole.height = window.innerHeight * 0.6;
     ctx = canvasSole.getContext('2d');
   }
+  // ridimensiona canvas pioggia
   if (canvasPioggia) {
     canvasPioggia.width = window.innerWidth * 0.45;
     canvasPioggia.height = window.innerHeight * 0.6;
@@ -112,13 +152,16 @@ function ridimensionaCanvas() {
     ctxPioggia = canvasPioggia.getContext('2d');
   }
 }
+// Richiama la funzione di ridimensionamento all'avvio
 ridimensionaCanvas();
+// Aggiorna canvas e oggetti scena al resize della finestra
 window.addEventListener('resize', () => {
   ridimensionaCanvas();
   aggiornaOggettiScene();
 });
 
-// Stato per sole, nuvola e pioggia
+// stato per sole nuvola pioggia
+// Oggetti che rappresentano lo stato del sole, della nuvola e delle nuvole/gocce di pioggia
 let sole = {
   x: 0, y: 0, raggio: 0, numRaggi: 10, lunghezzaRaggio: 0, angoloRaggio: 0, velocitaRaggio: 0.003
 };
@@ -127,8 +170,10 @@ let nuvola = {
 };
 let nuvolePioggia = [], gocce = [];
 
-// Aggiorna le posizioni e dimensioni delle figure in base al canvas
+// aggiorna posizioni dimensioni figure in base a canvas
+// Aggiorna le posizioni e dimensioni di sole, nuvole e pioggia in base alla dimensione dei canvas
 function aggiornaOggettiScene() {
+  // aggiorna sole nuvola
   if (canvasSole) {
     sole.x = canvasSole.width * 0.43;
     sole.y = canvasSole.height * 0.4;
@@ -138,6 +183,7 @@ function aggiornaOggettiScene() {
     nuvola.baseY = canvasSole.height * 0.26;
     nuvola.velocita = 0.015;
   }
+  // aggiorna nuvole gocce pioggia
   if (canvasPioggia) {
     nuvolePioggia = [
       { x: canvasPioggia.width * 0.29, y: canvasPioggia.height * 0.22, dx: -0.001, size: 1.2, min: canvasPioggia.width * 0.26, max: canvasPioggia.width * 0.35 },
@@ -157,9 +203,11 @@ function aggiornaOggettiScene() {
     }
   }
 }
+// Richiama la funzione per aggiornare le posizioni iniziali degli oggetti scena
 aggiornaOggettiScene();
 
-// Sole e raggi
+// funzione per disegnare sole
+// Disegna il sole sul canvas
 function disegnaSole() {
   if (!ctx) return;
   ctx.save();
@@ -173,6 +221,9 @@ function disegnaSole() {
   ctx.fill();
   ctx.restore();
 }
+
+// funzione per disegnare raggi sole
+// Disegna i raggi animati del sole
 let angoloPulseRaggio = 0;
 function disegnaRaggi() {
   if (!ctx) return;
@@ -194,7 +245,8 @@ function disegnaRaggi() {
   }
 }
 
-// Nuvola vicino al sole
+// funzione per disegnare nuvola vicino a sole
+// Disegna una nuvola animata vicino al sole
 function disegnaNuvola() {
   if (!ctx) return;
   nuvola.t += 0.003;
@@ -215,7 +267,8 @@ function disegnaNuvola() {
   ctx.restore();
 }
 
-// Nuvole e pioggia
+// funzione per disegnare nuvola pioggia
+// Disegna una nuvola per la scena della pioggia
 function disegnaNuvolaPioggia(cx, cy, scala) {
   if (!ctxPioggia) return;
   ctxPioggia.save();
@@ -235,6 +288,9 @@ function disegnaNuvolaPioggia(cx, cy, scala) {
   ctxPioggia.shadowBlur = 0;
   ctxPioggia.restore();
 }
+
+// funzione per disegnare pioggia
+// Disegna le gocce di pioggia animate
 function disegnaPioggia() {
   if (!ctxPioggia) return;
   ctxPioggia.save();
@@ -258,8 +314,10 @@ function disegnaPioggia() {
   ctxPioggia.restore();
 }
 
-// Animazione principale: aggiorna sole, nuvole, pioggia
+// funzione animazione principale aggiorna sole nuvola pioggia
+// Funzione di animazione principale che aggiorna e disegna sole, nuvole e pioggia
 function anima() {
+  // aggiorna disegna sole nuvola
   if (ctx && canvasSole) {
     ctx.clearRect(0, 0, canvasSole.width, canvasSole.height);
     disegnaSole();
@@ -271,6 +329,7 @@ function anima() {
       nuvola.direzione *= -1;
     }
   }
+  // aggiorna disegna nuvole pioggia gocce
   if (canvasPioggia && ctxPioggia) {
     ctxPioggia.clearRect(0, 0, canvasPioggia.width, canvasPioggia.height);
     for (let i = 0; i < nuvolePioggia.length; i++) {
@@ -292,6 +351,8 @@ function anima() {
   requestAnimationFrame(anima);
 }
 
+// avvia animazioni al caricamento pagina
+// Avvia le animazioni principali e del termometro al caricamento della pagina
 window.onload = function() {
   anima();
   animaTermometro();
