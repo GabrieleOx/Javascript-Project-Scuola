@@ -1,111 +1,171 @@
+/* Import Google Font Pacifico */
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Body and background */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #4CAF50;
-  color: #ffffff;
+  background: #4CAF50 url('../Imgs/fotosfondomorgan.jpg') no-repeat fixed center/cover;
+  color: #fff;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
   overflow-x: hidden;
 }
 
+/* Spacer utility */
 .spacer {
   height: 20vh;
 }
 
+/* Fade-in effect for text blocks */
 .fade-text {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 1s ease-out, transform 1s ease-out;
-  max-width: 1400px;
-  margin: 0 auto;
+  transition: opacity 1s, transform 1s;
+  max-width: 1800px;
+  margin: 0 auto 0 5%;
   padding: 40px 20px;
   font-size: 2.5rem;
   text-align: left;
-  margin-left: 5%;
-  margin-right: auto;
 }
-
 .fade-text.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
+/* Title with fade effect */
 .fade-title {
   transform: translateY(30px);
-  transition: opacity 1s ease-out, transform 2s ease-out;
+  transition: opacity 1s, transform 2s;
   text-align: center;
   font-size: 5rem;
   margin-top: 60px;
+  background: rgba(144,238,144,0.85);
+  color: #1b3d1b;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: bold;
 }
 
-#sun-cloud {
-  position:absolute;
-  border: none;
-  margin-top: -600px;
-  margin-left: 80%;
-  background:none;
-}
-
-#rain
-{
-  position: absolute;
-  top: 540px;
-  border: none;
-  background: none;
-  display: block;
-  left: 62%; /* sposta il canvas della pioggia meno a destra */
-}
+/* Barra navigazione fissa */
 .barra-navigazione-fissa {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
 }
 .barra-navigazione-fissa .logo-navigazione {
-    margin-left: 30px;
-    height: 60px;
-    display: flex;
-    align-items: center;
+  margin-left: 30px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+}
+.barra-navigazione-fissa .logo-navigazione img,
+.barra-navigazione-fissa a {
+  transition: transform 0.2s ease;
 }
 .barra-navigazione-fissa .logo-navigazione img {
-    height: 60px;
-    width: auto;
-    display: block;
-    transition: transform 0.2s ease;
+  height: 60px;
+  width: auto;
+  display: block;
 }
 .barra-navigazione-fissa ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 400px;
-    flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 400px;
+  flex: 1;
 }
 .barra-navigazione-fissa li {
-    text-align: center;
-    font-size: 1.5em;
-    font-family: 'Pacifico', cursive;
-    font-style: italic;
-    color: rgb(0, 0, 0);
+  text-align: center;
+  font-size: 1.5em;
+  font-family: 'Pacifico', cursive;
+  font-style: italic;
+  color: #000;
 }
 .barra-navigazione-fissa a {
-    color: rgb(0, 0, 0);
-    text-decoration: bold;
-    padding: 15px 0;
-    display: block;
-    transition: transform 0.2s ease;
+  color: #000;
+  font-weight: bold;
+  padding: 15px 0;
+  display: block;
 }
-.barra-navigazione-fissa a:hover, .barra-navigazione-fissa .logo-navigazione:hover img {
-    transform: scale(1.15);
+.barra-navigazione-fissa a:hover,
+.barra-navigazione-fissa .logo-navigazione:hover img {
+  transform: scale(1.15);
 }
 
-/* Nessuna modifica necessaria in questo file CSS per rallentare le nuvole: la velocità si regola solo in JS. */
+/* Paragraphs inside fade-text */
+.fade-text p {
+  background: rgba(144,238,144,0.85);
+  color: #1b3d1b;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.fade-text p:first-child {
+  font-weight: bold;
+}
+
+/* Canvas base styling */
+canvas {
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  position: absolute;
+}
+
+/* Thermometer canvas override */
+#thermo {
+  background: rgba(144,238,144,0.85);
+  top: 115px;
+  left: 97%;
+}
+
+/* Weather canvases positioning */
+#sun-cloud {
+  margin-top: -600px;
+  left: 55%;
+}
+#rain {
+  top: 540px;
+  left: 30%;
+}
+
+/* Sezione terreni */
+.terreni-flex {
+  position: relative;
+  margin-top: 10%;
+  min-height: 40vw;
+}
+.terreni-testo {
+  width: 60%;
+  display: inline-block;
+  vertical-align: top;
+}
+.terreni-img {
+  position: absolute;
+  top: 30%;
+  margin-left: 100%;
+  max-width: 35vw;
+  min-width: 18vw;
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  display: block;
+}
+
+

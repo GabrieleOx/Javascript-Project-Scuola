@@ -1,114 +1,69 @@
-// Mostra il testo con effetto fade quando si scrolla
+// Fade-in effect for text on scroll
 function mostraTestoConFadeScroll() {
   const elementi = document.querySelectorAll('.fade-text, .fade-title');
   const soglia = window.innerHeight * 0.7;
-  elementi.forEach(function(elemento) {
-    if (elemento.getBoundingClientRect().top < soglia) {
-      elemento.classList.add('visible');
-    }
+  elementi.forEach(el => {
+    if (el.getBoundingClientRect().top < soglia) el.classList.add('visible');
   });
 }
 window.addEventListener('scroll', mostraTestoConFadeScroll);
 window.addEventListener('load', mostraTestoConFadeScroll);
 
-// Prendi i canvas dal documento
+// Canvas setup
 const canvasSole = document.getElementById('sun-cloud');
 const canvasPioggia = document.getElementById('rain');
-let ctx = null;
-let ctxPioggia = null;
-let canvasTermometro = document.getElementById('thermo');
-let ctxTermometro = null;
-if (canvasTermometro) {
-  ctxTermometro = canvasTermometro.getContext('2d');
-}
+const canvasTermometro = document.getElementById('thermo');
+let ctx = canvasSole ? canvasSole.getContext('2d') : null;
+let ctxPioggia = canvasPioggia ? canvasPioggia.getContext('2d') : null;
+let ctxTermometro = canvasTermometro ? canvasTermometro.getContext('2d') : null;
 
-// Variabili per animazione termometro
-let termometro = {
-  min: 0,
-  max: 100,
-  valore: 60,
-  direzione: 1
-};
+// Termometro animation state
+let termometro = { min: 0, max: 100, valore: 60, direzione: 1 };
 
 function disegnaTermometro() {
   if (!ctxTermometro || !canvasTermometro) return;
   ctxTermometro.clearRect(0, 0, canvasTermometro.width, canvasTermometro.height);
-
-  // Parametri realistici
-  const cx = canvasTermometro.width / 2;
-  const topY = 40;
-  const bottomY = canvasTermometro.height - 40;
-  const larghezzaTubo = 18;
-  const tuboInterno = 10;
-  const raggioBulbo = 28;
-  const coloreMercurio = "#e74c3c";
-  const coloreVetro = "#e0e0e0";
-  const coloreOmbra = "#aaa";
-
-  // Ombra dietro
+  const cx = canvasTermometro.width / 2, topY = 40, bottomY = canvasTermometro.height - 40;
+  const larghezzaTubo = 18, tuboInterno = 10, raggioBulbo = 28;
   ctxTermometro.save();
-  ctxTermometro.shadowColor = coloreOmbra;
+  ctxTermometro.shadowColor = "#aaa";
   ctxTermometro.shadowBlur = 18;
-
-  // Corpo vetro
   ctxTermometro.beginPath();
   ctxTermometro.moveTo(cx - larghezzaTubo / 2, topY);
   ctxTermometro.lineTo(cx - larghezzaTubo / 2, bottomY - raggioBulbo);
   ctxTermometro.arc(cx, bottomY - raggioBulbo, larghezzaTubo / 2, Math.PI, 0, false);
   ctxTermometro.lineTo(cx + larghezzaTubo / 2, topY);
   ctxTermometro.closePath();
-  ctxTermometro.fillStyle = coloreVetro;
+  ctxTermometro.fillStyle = "#e0e0e0";
   ctxTermometro.globalAlpha = 0.7;
   ctxTermometro.fill();
   ctxTermometro.globalAlpha = 1;
   ctxTermometro.shadowBlur = 0;
-
   ctxTermometro.restore();
-
-  // Bulbo vetro
   ctxTermometro.beginPath();
   ctxTermometro.arc(cx, bottomY, raggioBulbo, 0, Math.PI * 2);
-  ctxTermometro.fillStyle = coloreVetro;
+  ctxTermometro.fillStyle = "#e0e0e0";
   ctxTermometro.globalAlpha = 0.7;
   ctxTermometro.fill();
   ctxTermometro.globalAlpha = 1;
-
-  // Mercurio (colonna)
-  let minY = bottomY - raggioBulbo;
-  let maxY = topY + 10;
-  let h = minY - maxY;
+  let minY = bottomY - raggioBulbo, maxY = topY + 10, h = minY - maxY;
   let yMercurio = minY - (termometro.valore / 100) * h;
-
   ctxTermometro.beginPath();
   ctxTermometro.moveTo(cx, minY);
   ctxTermometro.lineTo(cx, yMercurio);
   ctxTermometro.lineWidth = tuboInterno;
-  ctxTermometro.strokeStyle = coloreMercurio;
-  ctxTermometro.shadowColor = coloreMercurio;
+  ctxTermometro.strokeStyle = "#e74c3c";
+  ctxTermometro.shadowColor = "#e74c3c";
   ctxTermometro.shadowBlur = 10;
   ctxTermometro.stroke();
   ctxTermometro.shadowBlur = 0;
-
-  // Mercurio (bulbo)
   ctxTermometro.beginPath();
   ctxTermometro.arc(cx, bottomY, raggioBulbo - 7, 0, Math.PI * 2);
-  ctxTermometro.fillStyle = coloreMercurio;
-  ctxTermometro.shadowColor = coloreMercurio;
+  ctxTermometro.fillStyle = "#e74c3c";
+  ctxTermometro.shadowColor = "#e74c3c";
   ctxTermometro.shadowBlur = 18;
   ctxTermometro.fill();
   ctxTermometro.shadowBlur = 0;
-
-  // Riflesso vetro (colonna)
-  ctxTermometro.save();
-  ctxTermometro.globalAlpha = 0.18;
-  ctxTermometro.beginPath();
-  ctxTermometro.ellipse(cx - 8, bottomY - 10, 8, 22, -0.3, 0, Math.PI * 2);
-  ctxTermometro.fillStyle = "#fff";
-  ctxTermometro.fill();
-  ctxTermometro.globalAlpha = 1;
-  ctxTermometro.restore();
-
-  // Riflesso nel bulbo (piccolo cerchietto in alto a sinistra)
   ctxTermometro.save();
   ctxTermometro.globalAlpha = 0.32;
   ctxTermometro.beginPath();
@@ -117,8 +72,6 @@ function disegnaTermometro() {
   ctxTermometro.fill();
   ctxTermometro.globalAlpha = 1;
   ctxTermometro.restore();
-
-  // Scala graduata
   ctxTermometro.lineWidth = 2;
   ctxTermometro.strokeStyle = "#fff";
   for (let i = 0; i <= 10; i++) {
@@ -127,11 +80,10 @@ function disegnaTermometro() {
     ctxTermometro.moveTo(cx + larghezzaTubo / 2 + 3, y);
     ctxTermometro.lineTo(cx + larghezzaTubo / 2 + 13, y);
     ctxTermometro.stroke();
-    // Etichetta temperatura (più piccola)
     ctxTermometro.font = "bold 0.55em Segoe UI, Arial";
     ctxTermometro.fillStyle = "#fff";
     ctxTermometro.textAlign = "left";
-    let temp = Math.round((i / 10) * 20 + 10); // 10°C - 30°C
+    let temp = Math.round((i / 10) * 20 + 10);
     ctxTermometro.fillText(temp + "°", cx + larghezzaTubo / 2 + 16, y + 3);
   }
   ctxTermometro.restore();
@@ -139,7 +91,6 @@ function disegnaTermometro() {
 
 function animaTermometro() {
   if (!canvasTermometro) return;
-  // Oscilla tra 10 e 30 (nuova scala)
   termometro.valore += 0.02 * termometro.direzione;
   if (termometro.valore > 80) { termometro.valore = 80; termometro.direzione = -1; }
   if (termometro.valore < 15) { termometro.valore = 15; termometro.direzione = 1; }
@@ -147,7 +98,7 @@ function animaTermometro() {
   requestAnimationFrame(animaTermometro);
 }
 
-// Funzione per adattare i canvas alla finestra
+// Ridimensiona i canvas in base alla finestra
 function ridimensionaCanvas() {
   if (canvasSole) {
     canvasSole.width = window.innerWidth * 0.45;
@@ -167,33 +118,16 @@ window.addEventListener('resize', () => {
   aggiornaOggettiScene();
 });
 
-// Dati per il sole (valori relativi)
+// Stato per sole, nuvola e pioggia
 let sole = {
-  x: 0,
-  y: 0,
-  raggio: 0,
-  numRaggi: 10,
-  lunghezzaRaggio: 0,
-  angoloRaggio: 0,
-  velocitaRaggio: 0.003
+  x: 0, y: 0, raggio: 0, numRaggi: 10, lunghezzaRaggio: 0, angoloRaggio: 0, velocitaRaggio: 0.003
 };
-
-// Dati per la nuvola vicino al sole (valori relativi)
 let nuvola = {
-  x: 0,
-  y: 0,
-  baseX: 0,
-  baseY: 0,
-  velocita: 0.015,
-  direzione: -1,
-  t: 0 // tempo per animazione
+  x: 0, y: 0, baseX: 0, baseY: 0, velocita: 0.015, direzione: -1, t: 0
 };
+let nuvolePioggia = [], gocce = [];
 
-// Dati per le nuvole e la pioggia
-let nuvolePioggia = [];
-let gocce = [];
-
-// Funzione per aggiornare le posizioni e dimensioni in base al canvas
+// Aggiorna le posizioni e dimensioni delle figure in base al canvas
 function aggiornaOggettiScene() {
   if (canvasSole) {
     sole.x = canvasSole.width * 0.43;
@@ -225,25 +159,21 @@ function aggiornaOggettiScene() {
 }
 aggiornaOggettiScene();
 
-// Disegna il sole
+// Sole e raggi
 function disegnaSole() {
   if (!ctx) return;
   ctx.save();
   ctx.beginPath();
   ctx.arc(sole.x, sole.y, sole.raggio, 0, Math.PI * 2);
   ctx.fillStyle = "yellow";
-  ctx.shadowColor = "rgba(255, 165, 0, 0.7)";
-  ctx.shadowBlur = 30;
+  ctx.shadowColor = "rgba(180, 100, 0, 0.9)";
+  ctx.shadowBlur = 45;
   ctx.shadowOffsetX = 10;
   ctx.shadowOffsetY = 10;
   ctx.fill();
   ctx.restore();
 }
-
-// Variabile per animare la lunghezza dei raggi
 let angoloPulseRaggio = 0;
-
-// Disegna i raggi del sole
 function disegnaRaggi() {
   if (!ctx) return;
   angoloPulseRaggio += 0.012;
@@ -264,7 +194,7 @@ function disegnaRaggi() {
   }
 }
 
-// Disegna la nuvola vicino al sole
+// Nuvola vicino al sole
 function disegnaNuvola() {
   if (!ctx) return;
   nuvola.t += 0.003;
@@ -273,8 +203,8 @@ function disegnaNuvola() {
   let cx = (nuvola.baseX || nuvola.x) + offsetX;
   let cy = (nuvola.baseY || nuvola.y) + offsetY;
   ctx.save();
-  ctx.shadowColor = "rgba(255, 229, 80, 0.62)";
-  ctx.shadowBlur = 40;
+  ctx.shadowColor = "rgba(60, 60, 60, 0.22)";
+  ctx.shadowBlur = 18;
   ctx.fillStyle = "white";
   ctx.beginPath();
   ctx.arc(cx, cy, 40, 0, Math.PI * 2);
@@ -285,7 +215,7 @@ function disegnaNuvola() {
   ctx.restore();
 }
 
-// Disegna una nuvola per la pioggia
+// Nuvole e pioggia
 function disegnaNuvolaPioggia(cx, cy, scala) {
   if (!ctxPioggia) return;
   ctxPioggia.save();
@@ -298,20 +228,20 @@ function disegnaNuvolaPioggia(cx, cy, scala) {
   ctxPioggia.arc(40, 20, 45, 0, Math.PI * 2);
   ctxPioggia.fillStyle = "#e0e7ef";
   ctxPioggia.globalAlpha = 0.97;
-  ctxPioggia.shadowColor = "#b0b8c6";
-  ctxPioggia.shadowBlur = 18;
+  ctxPioggia.shadowColor = "rgba(50, 60, 90, 0.22)";
+  ctxPioggia.shadowBlur = 12;
   ctxPioggia.fill();
   ctxPioggia.globalAlpha = 1;
   ctxPioggia.shadowBlur = 0;
   ctxPioggia.restore();
 }
-
-// Disegna la pioggia con effetto fade out graduale e continuo
 function disegnaPioggia() {
   if (!ctxPioggia) return;
   ctxPioggia.save();
   ctxPioggia.strokeStyle = "#8ec6f7";
   ctxPioggia.lineWidth = 2;
+  ctxPioggia.shadowColor = "rgba(40, 80, 160, 0.55)";
+  ctxPioggia.shadowBlur = 12;
   const offsetX = canvasPioggia.width * 0.12;
   for (let i = 0; i < gocce.length; i++) {
     let goccia = gocce[i];
@@ -324,12 +254,12 @@ function disegnaPioggia() {
     ctxPioggia.stroke();
   }
   ctxPioggia.globalAlpha = 1;
+  ctxPioggia.shadowBlur = 0;
   ctxPioggia.restore();
 }
 
-// Animazione continua
+// Animazione principale: aggiorna sole, nuvole, pioggia
 function anima() {
-  // Sole e nuvola
   if (ctx && canvasSole) {
     ctx.clearRect(0, 0, canvasSole.width, canvasSole.height);
     disegnaSole();
@@ -341,17 +271,13 @@ function anima() {
       nuvola.direzione *= -1;
     }
   }
-
-  // Pioggia e nuvole
   if (canvasPioggia && ctxPioggia) {
     ctxPioggia.clearRect(0, 0, canvasPioggia.width, canvasPioggia.height);
     for (let i = 0; i < nuvolePioggia.length; i++) {
       let n = nuvolePioggia[i];
       disegnaNuvolaPioggia(n.x, n.y, n.size);
       n.x += n.dx * canvasPioggia.width * 0.01;
-      if (n.x < n.min || n.x > n.max) {
-        n.dx *= -1;
-      }
+      if (n.x < n.min || n.x > n.max) n.dx *= -1;
     }
     for (let i = 0; i < gocce.length; i++) {
       let goccia = gocce[i];
