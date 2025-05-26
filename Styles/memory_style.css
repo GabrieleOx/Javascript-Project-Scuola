@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 html {
     scroll-behavior: smooth;
+    overflow: hidden;
 }
 .barra-navigazione-fissa {
     position: fixed;
@@ -12,6 +13,7 @@ html {
     z-index: 1000;
     display: flex;
     align-items: center;
+    transition: transform 330ms ease;
 }
 .barra-navigazione-fissa .logo-navigazione {
     margin-left: 30px;
@@ -52,10 +54,31 @@ html {
     transform: scale(1.15);
 }
 
+#reset{
+    color: rgb(255, 0, 0);
+}
+
+#tendina{
+    height: 80px;
+    width: 80px;
+}
+
+#tendina-button{
+    background: none;
+    border: none;
+    height: 80px;
+    width: 80px;
+    position: absolute;
+    left: 90%;
+    top: -3%;
+    transition: transform 330ms ease;
+}
+
 body{
     background-image: url("../Imgs/SfondoMemory.jpg");
     background-size:cover;
     background-repeat: no-repeat;
+    overflow: hidden;
 }
 
 .cards{
@@ -64,6 +87,7 @@ body{
     height: 200px;
     background-color: white;
     border: medium solid black;
+    transition: transform 0.6s ease;
 }
 
 .immagine{
@@ -84,6 +108,8 @@ body{
     margin-left: 37%;
     color: rgb(2, 95, 2);
     text-shadow: 5px 5px black;
+    width: fit-content;
+    transition: transform 330ms ease;
 }
 
 #containerSacchetto{
@@ -94,6 +120,8 @@ body{
     background-image: url("../Imgs/Sacchetto.png");
     background-repeat: no-repeat;
     background-size: contain;
+
+    display: block;
 }
 
 #titoloStart{
@@ -120,10 +148,12 @@ body{
     color: rgb(215, 191, 147);
     margin-top: 600px;
     margin-left: -385px;
+    transition: transform 330ms ease;
 }
 
 #containerVaso{
     display: none;
+
     margin-top: -60px;
     margin-left: 27%;
     width: 770px;
@@ -165,4 +195,18 @@ body{
     background-size: 160px 60px;
     margin-top: 500px;
     margin-left: 475px;
+}
+
+#saveButton{
+    position: absolute;
+    margin-top: 680px;
+    margin-left: 200px;
+    font-size: 22px;
+    border-radius: 10px;
+    background-color: rgb(160, 92, 19);
+}
+
+#saveLink{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
 }
