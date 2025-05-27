@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 
 .barra-navigazione-fissa {
   position: fixed;
@@ -58,6 +58,7 @@ body {
     padding: 100px 0 0 0; /* Sposta il contenuto verso il basso */
     background-color: #f8f8f8;
     text-align: center;
+    background: #4CAF50 url('../Imgs/Sfondo catalogo.jpg') no-repeat fixed center/cover;
 }
 
 h1 {
@@ -69,11 +70,10 @@ h1 {
 .catalogo {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap:40px;
     justify-content: center;
     align-items: flex-start;
     align-content: flex-start;
-    padding: 20px;
     max-width: 100%;
     margin-top: 50px; /* Sposta il catalogo più in basso */
 }
