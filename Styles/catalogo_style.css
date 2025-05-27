@@ -56,14 +56,14 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 100px 0 0 0; /* Sposta il contenuto verso il basso */
+    padding: 100px 0 0 0; /*per non far andare la pagina sotto il banner in alto*/
     background-color: #f8f8f8;
     text-align: center;
     background: #4CAF50 url('../Imgs/Sfondo catalogo.jpg') no-repeat fixed center/cover;
 }
 
 h1 {
-    margin-top: 20px; /* Aumenta la distanza dal bordo superiore */
+    margin-top: 20px;
     font-size: 50px;
     color: #333;
 }
@@ -76,16 +76,22 @@ h1 {
     align-items: flex-start;
     align-content: flex-start;
     max-width: 100%;
-    margin-top: 50px; /* Sposta il catalogo più in basso */
+    margin-top: 50px; 
 }
 #titoloCatalogo {
-  font-family: 'Pacifico', cursive; /* Usa il font di Google Fonts */
+    font-family: 'Pacifico', cursive;
+}
+
+.label-style {
+    color: white; 
+    font-size: 20px;
+    font-weight: bold; /*bold=grassetto*/
 }
 
 
 
 .elemento {
-    perspective: 1000px; /* Ripristinato per effetto 3D */
+    perspective: 1000px; /*effetto 3D */
     width: 250px;
     height: 320px;
     position: relative;
@@ -119,7 +125,7 @@ h1 {
 }
 
 .front {
-    background: #fff;
+    background: #ffffff;
 }
 
 .front img {
@@ -142,7 +148,7 @@ p {
 }
 
 .back {
-    background: #f0f0f0;
+    background: #ffffff;
     transform: rotateY(180deg);
 }
 

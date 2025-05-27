@@ -25,8 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Kentia": { terreno: ["limoso", "qualsiasi"], acqua: ["moderata", "qualsiasi"], sole: ["indiretto", "qualsiasi"] },
         "Aloe Vera": { terreno: ["sabbioso", "qualsiasi"], acqua: ["scarsa", "qualsiasi"], sole: ["diretto", "qualsiasi"] }
     };
-
-    // Effetto di fade-in + scala al mouse
+    
     elementi.forEach((el, index) => {
         el.addEventListener("mouseenter", () => el.style.transform = "scale(1.05)");
         el.addEventListener("mouseleave", () => el.style.transform = "scale(1)");
